@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raccoon Siege: Defend the Donuts!</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+            user-select: none;
+        }
+        
+        #game-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            background-image: url('background.png'); /* Your background image */
+            background-size: cover;
+        }
+        
+        #lives-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-wrap: wrap;
+            width: 120px;
+            justify-content: center;
+        }
+        
+        .donut {
+            width: 40px;
+            height: 40px;
+            margin: 10px;
+            transition: all 0.3s;
+            background-image: url('donut.png'); /* Your donut image */
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+        
+        .raccoon {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            transition: transform 0.1s;
+            background-image: url('raccoon.png'); /* Your raccoon image */
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+        
+        .raccoon:hover {
+            transform: scale(1.2);
+        }
+        
+        .employee {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            cursor: move;
+            background-image: url('employee.png'); /* Your employee image */
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+        
+        .bullet {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: yellow;
+            border-radius: 50%;
+            box-shadow: 0 0 5px yellow;
+        }
+        
+        .trash {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background-image: url('trash.png'); /* Your trash image */
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+        
+        #employee-menu {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 10px;
+            border-radius: 10px;
+        }
+        
+        .menu-employee {
+            width: 40px;
+            height: 40px;
+            cursor: grab;
+            padding: 5px;
+            border-radius: 5px;
+            background-image: url('employee.png'); /* Your employee image */
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+        
+        .menu-employee:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+        
+        #score-display {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        #game-over {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 36px;
+            z-index: 100;
+        }
+        
+        #restart-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 20px;
+            background-color: #ff6b6b;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <div id="score-display">Score: 0</div>
+        
+        <div id="lives-container">
+            <div class="donut"></div>
+            <div class="donut"></div>
+            <div class="donut"></div>
+            <div class="donut"></div>
+        </div>
+        
+        <div id="employee-menu">
+            <div class="menu-employee" draggable="true"></div>
+            <div class="menu-employee" draggable="true"></div>
+            <div class="menu-employee" draggable="true"></div>
+        </div>
+        
+        <div id="game-over">
+            <h1>Game Over!</h1>
+            <p id="final-score">Score: 0</p>
+            <button id="restart-btn">Play Again</button>
+        </div>
+    </div>
+
+    <script>
+        // Game state
+        const gameState = {
+            lives: 4,
+            score: 0,
+            raccoonSpeed: 1,
+            raccoonSpawnRate: 2000,
+            employees: [],
+            raccoons: [],
+            bullets: [],
+            trash: [],
+            gameActive: true,
+            lastSpawnTime: 0,
+            difficultyIncreaseInterval: 30000,
+            lastDifficultyIncrease: 0
+        };
+
+        // DOM elements
+        const gameContainer = document.getElementById('game-container');
+        const livesContainer = document.getElementById('lives-container');
+        const donuts = document.querySelectorAll('.donut');
+        const scoreDisplay = document.getElementById('score-display');
+        const gameOverScreen = document.getElementById('game-over');
+        const finalScoreDisplay = document.getElementById('final-score');
+        const restartBtn = document.getElementById('restart-btn');
+        const menuEmployees = document.querySelectorAll('.menu-employee');
+
+        // Employee positions
+        const employeePositions = {
+            top: { x: window.innerWidth / 2, y: window.innerHeight / 2 - 100, rotation: 0 },
+            bottom: { x: window.innerWidth / 2, y: window.innerHeight / 2 + 100, rotation: 180 },
+            left: { x: window.innerWidth / 2 - 100, y: window.innerHeight / 2, rotation: 270 },
+            right: { x: window.innerWidth / 2 + 100, y: window.innerHeight / 2, rotation: 90 }
+        };
+
+        // Initialize game
+        function initGame() {
+            gameState.lives = 4;
+            gameState.score = 0;
+            gameState.raccoonSpeed = 1;
+            gameState.raccoonSpawnRate = 2000;
+            gameState.employees = [];
+            gameState.raccoons = [];
+            gameState.bullets = [];
+            gameState.trash = [];
+            gameState.gameActive = true;
+            gameState.lastSpawnTime = 0;
+            gameState.lastDifficultyIncrease = Date.now();
+
+            // Reset donuts display
+            donuts.forEach(donut => {
+                donut.style.display = 'block';
+                donut.style.opacity = '1';
+                donut.style.transform = 'scale(1)';
+            });
+
+            // Clear all game elements
+            document.querySelectorAll('.raccoon, .employee, .bullet, .trash').forEach(el => el.remove());
+
+            // Hide game over screen
+            gameOverScreen.style.display = 'none';
+
+            // Start game loop
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Game loop
+        function gameLoop(timestamp) {
+            if (!gameState.gameActive) return;
+
+            // Spawn raccoons
+            if (timestamp - gameState.lastSpawnTime > gameState.raccoonSpawnRate) {
+                spawnRaccoon();
+                gameState.lastSpawnTime = timestamp;
+            }
+
+            // Increase difficulty over time
+            if (timestamp - gameState.lastDifficultyIncrease > gameState.difficultyIncreaseInterval) {
+                increaseDifficulty();
+                gameState.lastDifficultyIncrease = timestamp;
+            }
+
+            // Move raccoons
+            moveRaccoons();
+
+            // Move bullets
+            moveBullets();
+
+            // Move trash
+            moveTrash();
+
+            // Check collisions
+            checkCollisions();
+
+            // Update score display
+            scoreDisplay.textContent = `Score: ${gameState.score}`;
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Spawn a new raccoon
+        function spawnRaccoon() {
+            const raccoon = document.createElement('div');
+            raccoon.className = 'raccoon';
+            
+            // Determine spawn side (0: top, 1: right, 2: bottom, 3: left)
+            const side = Math.floor(Math.random() * 4);
+            let x, y;
+            
+            switch (side) {
+                case 0: // top
+                    x = Math.random() * window.innerWidth;
+                    y = -50;
+                    break;
+                case 1: // right
+                    x = window.innerWidth + 50;
+                    y = Math.random() * window.innerHeight;
+                    break;
+                case 2: // bottom
+                    x = Math.random() * window.innerWidth;
+                    y = window.innerHeight + 50;
+                    break;
+                case 3: // left
+                    x = -50;
+                    y = Math.random() * window.innerHeight;
+                    break;
+            }
+            
+            raccoon.style.left = `${x}px`;
+            raccoon.style.top = `${y}px`;
+            
+            gameContainer.appendChild(raccoon);
+            
+            gameState.raccoons.push({
+                element: raccoon,
+                x: x,
+                y: y,
+                health: 2,
+                side: side,
+                trashCooldown: 0
+            });
+            
+            // Add click event to kill raccoon
+            raccoon.addEventListener('click', () => {
+                if (!gameState.gameActive) return;
+                
+                // Remove raccoon
+                raccoon.remove();
+                gameState.raccoons = gameState.raccoons.filter(r => r.element !== raccoon);
+                
+                // Increase score
+                gameState.score += 10;
+                scoreDisplay.textContent = `Score: ${gameState.score}`;
+            });
+        }
+
+        // Move all raccoons toward center
+        function moveRaccoons() {
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 2;
+            
+            gameState.raccoons.forEach(raccoon => {
+                // Calculate direction to center
+                const dx = centerX - raccoon.x;
+                const dy = centerY - raccoon.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                // Normalize direction and apply speed
+                const vx = (dx / distance) * gameState.raccoonSpeed;
+                const vy = (dy / distance) * gameState.raccoonSpeed;
+                
+                // Update position
+                raccoon.x += vx;
+                raccoon.y += vy;
+                
+                raccoon.element.style.left = `${raccoon.x}px`;
+                raccoon.element.style.top = `${raccoon.y}px`;
+                
+                // Check if raccoon reached center
+                if (distance < 40) {
+                    raccoonReachedCenter(raccoon);
+                }
+                
+                // Handle trash throwing if employee is blocking
+                if (raccoon.trashCooldown <= 0) {
+                    checkEmployeeBlocking(raccoon);
+                } else {
+                    raccoon.trashCooldown--;
+                }
+            });
+        }
+
+        // Handle raccoon reaching center
+        function raccoonReachedCenter(raccoon) {
+            // Remove raccoon
+            raccoon.element.remove();
+            gameState.raccoons = gameState.raccoons.filter(r => r !== raccoon);
+            
+            // Lose a life
+            gameState.lives--;
+            
+            // Animate donut loss
+            if (gameState.lives >= 0) {
+                donuts[gameState.lives].style.transform = 'scale(0)';
+                donuts[gameState.lives].style.opacity = '0';
+            }
+            
+            // Check game over
+            if (gameState.lives <= 0) {
+                endGame();
+            }
+        }
+
+        // Check if employee is blocking and throw trash
+        function checkEmployeeBlocking(raccoon) {
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 2;
+            
+            // Determine which side the raccoon is approaching from
+            let blockingEmployee = null;
+            
+            gameState.employees.forEach(employee => {
+                const dx = raccoon.x - employee.x;
+                const dy = raccoon.y - employee.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                if (distance < 150) {
+                    blockingEmployee = employee;
+                }
+            });
+            
+            if (blockingEmployee) {
+                throwTrash(raccoon, blockingEmployee);
+                raccoon.trashCooldown = 180; // 3 seconds at 60fps
+            }
+        }
+
+        // Throw trash at employee
+        function throwTrash(raccoon, employee) {
+            const trash = document.createElement('div');
+            trash.className = 'trash';
+            trash.style.left = `${raccoon.x}px`;
+            trash.style.top = `${raccoon.y}px`;
+            gameContainer.appendChild(trash);
+            
+            gameState.trash.push({
+                element: trash,
+                x: raccoon.x,
+                y: raccoon.y,
+                target: employee,
+                speed: 3
+            });
+        }
+
+        // Move all bullets
+        function moveBullets() {
+            gameState.bullets.forEach((bullet, index) => {
+                // Move toward target
+                const dx = bullet.target.x - bullet.x;
+                const dy = bullet.target.y - bullet.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                if (distance < 5) {
+                    // Bullet reached target
+                    bullet.element.remove();
+                    gameState.bullets.splice(index, 1);
+                    
+                    // Damage raccoon
+                    bullet.target.health--;
+                    if (bullet.target.health <= 0) {
+                        bullet.target.element.remove();
+                        gameState.raccoons = gameState.raccoons.filter(r => r !== bullet.target);
+                        gameState.score += 10;
+                    }
+                } else {
+                    // Move bullet
+                    const vx = (dx / distance) * bullet.speed;
+                    const vy = (dy / distance) * bullet.speed;
+                    
+                    bullet.x += vx;
+                    bullet.y += vy;
+                    
+                    bullet.element.style.left = `${bullet.x}px`;
+                    bullet.element.style.top = `${bullet.y}px`;
+                }
+            });
+        }
+
+        // Move all trash
+        function moveTrash() {
+            gameState.trash.forEach((trash, index) => {
+                // Move toward employee
+                const dx = trash.target.x - trash.x;
+                const dy = trash.target.y - trash.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                if (distance < 5) {
+                    // Trash reached employee
+                    trash.element.remove();
+                    gameState.trash.splice(index, 1);
+                    
+                    // Damage employee
+                    trash.target.health--;
+                    if (trash.target.health <= 0) {
+                        trash.target.element.remove();
+                        gameState.employees = gameState.employees.filter(e => e !== trash.target);
+                    }
+                } else {
+                    // Move trash
+                    const vx = (dx / distance) * trash.speed;
+                    const vy = (dy / distance) * trash.speed;
+                    
+                    trash.x += vx;
+                    trash.y += vy;
+                    
+                    trash.element.style.left = `${trash.x}px`;
+                    trash.element.style.top = `${trash.y}px`;
+                }
+            });
+        }
+
+        // Check for collisions
+        function checkCollisions() {
+            // No specific collision needed beyond what we already handle
+        }
+
+        // Increase difficulty
+        function increaseDifficulty() {
+            gameState.raccoonSpeed += 0.2;
+            gameState.raccoonSpawnRate = Math.max(500, gameState.raccoonSpawnRate - 200);
+        }
+
+        // End game
+        function endGame() {
+            gameState.gameActive = false;
+            finalScoreDisplay.textContent = `Score: ${gameState.score}`;
+            gameOverScreen.style.display = 'flex';
+        }
+
+        // Set up employee drag and drop
+        menuEmployees.forEach(menuEmployee => {
+            menuEmployee.addEventListener('dragstart', e => {
+                e.dataTransfer.setData('text/plain', 'employee');
+            });
+        });
+
+        gameContainer.addEventListener('dragover', e => {
+            e.preventDefault();
+        });
+
+        gameContainer.addEventListener('drop', e => {
+            e.preventDefault();
+            
+            if (!gameState.gameActive) return;
+            
+            const type = e.dataTransfer.getData('text/plain');
+            if (type !== 'employee') return;
+            
+            // Find closest employee position
+            let closestPosition = null;
+            let minDistance = Infinity;
+            
+            for (const [side, pos] of Object.entries(employeePositions)) {
+                // Check if position is already taken
+                const taken = gameState.employees.some(emp => emp.side === side);
+                if (taken) continue;
+                
+                const distance = Math.sqrt(
+                    Math.pow(e.clientX - pos.x, 2) + 
+                    Math.pow(e.clientY - pos.y, 2)
+                );
+                
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    closestPosition = { side, ...pos };
+                }
+            }
+            
+            if (closestPosition && minDistance < 200) {
+                placeEmployee(closestPosition);
+            }
+        });
+
+        // Place an employee
+        function placeEmployee(position) {
+            const employee = document.createElement('div');
+            employee.className = 'employee';
+            employee.style.left = `${position.x}px`;
+            employee.style.top = `${position.y}px`;
+            employee.style.transform = `rotate(${position.rotation}deg)`;
+            gameContainer.appendChild(employee);
+            
+            const newEmployee = {
+                element: employee,
+                x: position.x,
+                y: position.y,
+                side: position.side,
+                health: 6,
+                shootCooldown: 0
+            };
+            
+            gameState.employees.push(newEmployee);
+            
+            // Set up shooting interval
+            const shootInterval = setInterval(() => {
+                if (!gameState.gameActive) {
+                    clearInterval(shootInterval);
+                    return;
+                }
+                
+                shoot(newEmployee);
+            }, 1000);
+        }
+
+        // Employee shooting
+        function shoot(employee) {
+            // Find closest raccoon approaching from this side
+            let targetRaccoon = null;
+            let minDistance = Infinity;
+            
+            gameState.raccoons.forEach(raccoon => {
+                // Only target raccoons coming from the same side
+                if (raccoon.side === employee.side) {
+                    const centerX = window.innerWidth / 2;
+                    const centerY = window.innerHeight / 2;
+                    const distance = Math.sqrt(
+                        Math.pow(raccoon.x - centerX, 2) + 
+                        Math.pow(raccoon.y - centerY, 2)
+                    );
+                    
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        targetRaccoon = raccoon;
+                    }
+                }
+            });
+            
+            if (targetRaccoon) {
+                const bullet = document.createElement('div');
+                bullet.className = 'bullet';
+                bullet.style.left = `${employee.x}px`;
+                bullet.style.top = `${employee.y}px`;
+                gameContainer.appendChild(bullet);
+                
+                gameState.bullets.push({
+                    element: bullet,
+                    x: employee.x,
+                    y: employee.y,
+                    target: targetRaccoon,
+                    speed: 5
+                });
+            }
+        }
+
+        // Restart game
+        restartBtn.addEventListener('click', initGame);
+
+        // Start game
+        initGame();
+    </script>
+</body>
+</html>
