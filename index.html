@@ -17,7 +17,7 @@
             position: relative;
             width: 100vw;
             height: 100vh;
-            background-image: url('counterPicture.png');
+            background-image: url('counterGPT.png');
             background-size: cover;
         }
         
@@ -59,14 +59,13 @@
         
         .employee {
             position: absolute;
-            width: 40px;
-            height: 40px;
+            width: 60px;
+            height: 60px;
             cursor: move;
             background-size: contain;
             background-repeat: no-repeat;
         }
         
-        /* Employee types */
         .employee-type1 {
             background-image: url('employee1.png');
         }
@@ -81,25 +80,11 @@
         
         .bullet {
             position: absolute;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-        }
-        
-        /* Bullet types */
-        .bullet-type1 {
-            background-color: yellow;
-            box-shadow: 0 0 5px yellow;
-        }
-        
-        .bullet-type2 {
-            background-color: red;
-            box-shadow: 0 0 5px red;
-        }
-        
-        .bullet-type3 {
-            background-color: blue;
-            box-shadow: 0 0 5px blue;
+            width: 15px;
+            height: 15px;
+            background-image: url('bullet.png');
+            background-size: contain;
+            background-repeat: no-repeat;
         }
         
         .trash {
@@ -111,10 +96,9 @@
             background-repeat: no-repeat;
         }
         
-        /* Health bars */
         .health-bar-container {
             position: absolute;
-            width: 40px;
+            width: 60px;
             height: 5px;
             top: -8px;
             left: 0;
@@ -149,8 +133,8 @@
         }
         
         .menu-employee {
-            width: 40px;
-            height: 40px;
+            width: 60px;
+            height: 60px;
             cursor: grab;
             padding: 5px;
             border-radius: 5px;
@@ -162,7 +146,6 @@
             background-color: rgba(0, 0, 0, 0.1);
         }
         
-        /* Employee menu types */
         .menu-employee-type1 {
             background-image: url('employee1.png');
         }
@@ -236,12 +219,7 @@
             <div class="donut"></div>
         </div>
         
-        <div id="employee-info">
-            <strong>Employee Types:</strong><br>
-            1. Normal (2 damage, 6 health)<br>
-            2. Fast (1 damage, 4 health, rapid fire)<br>
-            3. Strong (3 damage, 8 health, slow fire)
-        </div>
+    
         
         <div id="employee-menu">
             <div class="menu-employee menu-employee-type1" draggable="true" data-type="1"></div>
@@ -257,7 +235,6 @@
     </div>
 
     <script>
-        // Game state
         const gameState = {
             lives: 4,
             score: 0,
@@ -273,35 +250,33 @@
             lastDifficultyIncrease: 0
         };
 
-        // Employee types configuration
         const employeeTypes = {
-            1: { // Normal
-                damage: 2,
-                health: 6,
-                fireRate: 1000, // ms
-                speed: 5,
-                class: 'employee-type1',
-                bulletClass: 'bullet-type1'
-            },
-            2: { // Fast
-                damage: 1,
-                health: 4,
-                fireRate: 500,
-                speed: 7,
-                class: 'employee-type2',
-                bulletClass: 'bullet-type2'
-            },
-            3: { // Strong
-                damage: 3,
-                health: 8,
-                fireRate: 1500,
-                speed: 4,
-                class: 'employee-type3',
-                bulletClass: 'bullet-type3'
-            }
-        };
+                1: {
+                    damage: 1,
+                    health: 4,
+                    fireRate: 2000,
+                    speed: 0.5,
+                    class: 'employee-type1',
+                    attackCooldown: 180  // Increased cooldown for less frequent shooting
+                },
+                2: {
+                    damage: 1,
+                    health: 4,
+                    fireRate: 1500,
+                    speed: 1,
+                    class: 'employee-type2',
+                    attackCooldown: 150  // Increased cooldown for less frequent shooting
+                },
+                3: {
+                    damage: 1,
+                    health: 4,
+                    fireRate: 1000,
+                    speed: 2,
+                    class: 'employee-type3',
+                    attackCooldown: 120  // Increased cooldown for less frequent shooting
+                }
+            };
 
-        // DOM elements
         const gameContainer = document.getElementById('game-container');
         const livesContainer = document.getElementById('lives-container');
         const donuts = document.querySelectorAll('.donut');
@@ -311,7 +286,6 @@
         const restartBtn = document.getElementById('restart-btn');
         const menuEmployees = document.querySelectorAll('.menu-employee');
 
-        // Employee positions
         const employeePositions = {
             top: { x: window.innerWidth / 2, y: window.innerHeight / 2 - 100, rotation: 0 },
             bottom: { x: window.innerWidth / 2, y: window.innerHeight / 2 + 100, rotation: 180 },
@@ -319,7 +293,6 @@
             right: { x: window.innerWidth / 2 + 100, y: window.innerHeight / 2, rotation: 90 }
         };
 
-        // Initialize game
         function initGame() {
             gameState.lives = 4;
             gameState.score = 0;
@@ -333,63 +306,46 @@
             gameState.lastSpawnTime = 0;
             gameState.lastDifficultyIncrease = Date.now();
 
-            // Reset donuts display
             donuts.forEach(donut => {
                 donut.style.display = 'block';
                 donut.style.opacity = '1';
                 donut.style.transform = 'scale(1)';
             });
 
-            // Clear all game elements
             document.querySelectorAll('.raccoon, .employee, .bullet, .trash').forEach(el => el.remove());
 
-            // Hide game over screen
             gameOverScreen.style.display = 'none';
 
-            // Start game loop
             requestAnimationFrame(gameLoop);
         }
 
-        // Game loop
         function gameLoop(timestamp) {
             if (!gameState.gameActive) return;
 
-            // Spawn raccoons
             if (timestamp - gameState.lastSpawnTime > gameState.raccoonSpawnRate) {
                 spawnRaccoon();
                 gameState.lastSpawnTime = timestamp;
             }
 
-            // Increase difficulty over time
             if (timestamp - gameState.lastDifficultyIncrease > gameState.difficultyIncreaseInterval) {
                 increaseDifficulty();
                 gameState.lastDifficultyIncrease = timestamp;
             }
 
-            // Move raccoons
             moveRaccoons();
-
-            // Move bullets
-            moveBullets();
-
-            // Move trash
-            moveTrash();
-
-            // Check collisions
+            moveProjectiles();
+            handleEmployeeAttacks();
             checkCollisions();
 
-            // Update score display
             scoreDisplay.textContent = `Score: ${gameState.score}`;
 
             requestAnimationFrame(gameLoop);
         }
 
-        // Spawn a new raccoon
         function spawnRaccoon() {
             const raccoon = document.createElement('div');
             raccoon.className = 'raccoon';
             
-            // Create health bar
             const healthBarContainer = document.createElement('div');
             healthBarContainer.className = 'health-bar-container';
             
@@ -400,24 +356,23 @@
             healthBarContainer.appendChild(healthBar);
             raccoon.appendChild(healthBarContainer);
             
-            // Determine spawn side (0: top, 1: right, 2: bottom, 3: left)
             const side = Math.floor(Math.random() * 4);
             let x, y;
             
             switch (side) {
-                case 0: // top
+                case 0:
                     x = Math.random() * window.innerWidth;
                     y = -50;
                     break;
-                case 1: // right
+                case 1:
                     x = window.innerWidth + 50;
                     y = Math.random() * window.innerHeight;
                     break;
-                case 2: // bottom
+                case 2:
                     x = Math.random() * window.innerWidth;
                     y = window.innerHeight + 50;
                     break;
-                case 3: // left
+                case 3:
                     x = -50;
                     y = Math.random() * window.innerHeight;
                     break;
@@ -439,83 +394,64 @@
                 trashCooldown: 0
             });
             
-            // Add click event to kill raccoon
             raccoon.addEventListener('click', () => {
                 if (!gameState.gameActive) return;
                 
-                // Remove raccoon
                 raccoon.remove();
                 gameState.raccoons = gameState.raccoons.filter(r => r.element !== raccoon);
                 
-                // Increase score
-                gameState.score += 10;
+                gameState.score += 1;  // Changed from 10 to 1 point per raccoon
                 scoreDisplay.textContent = `Score: ${gameState.score}`;
             });
         }
 
-        // Move all raccoons toward center
         function moveRaccoons() {
             const centerX = window.innerWidth / 2;
             const centerY = window.innerHeight / 2;
             
             gameState.raccoons.forEach(raccoon => {
-                // Calculate direction to center
                 const dx = centerX - raccoon.x;
                 const dy = centerY - raccoon.y;
                 const distance = Math.sqrt(dx * dx + dy * dy);
                 
-                // Normalize direction and apply speed
                 const vx = (dx / distance) * gameState.raccoonSpeed;
                 const vy = (dy / distance) * gameState.raccoonSpeed;
                 
-                // Update position
                 raccoon.x += vx;
                 raccoon.y += vy;
                 
                 raccoon.element.style.left = `${raccoon.x}px`;
                 raccoon.element.style.top = `${raccoon.y}px`;
                 
-                // Check if raccoon reached center
                 if (distance < 40) {
                     raccoonReachedCenter(raccoon);
                 }
                 
-                // Handle trash throwing if employee is blocking
                 if (raccoon.trashCooldown <= 0) {
-                    checkEmployeeBlocking(raccoon);
+                    checkRaccoonAttacks(raccoon);
                 } else {
                     raccoon.trashCooldown--;
                 }
             });
         }
 
-        // Handle raccoon reaching center
         function raccoonReachedCenter(raccoon) {
-            // Remove raccoon
             raccoon.element.remove();
             gameState.raccoons = gameState.raccoons.filter(r => r !== raccoon);
             
-            // Lose a life
             gameState.lives--;
             
-            // Animate donut loss
             if (gameState.lives >= 0) {
                 donuts[gameState.lives].style.transform = 'scale(0)';
                 donuts[gameState.lives].style.opacity = '0';
             }
             
-            // Check game over
             if (gameState.lives <= 0) {
                 endGame();
             }
         }
 
-        // Check if employee is blocking and throw trash
-        function checkEmployeeBlocking(raccoon) {
-            const centerX = window.innerWidth / 2;
-            const centerY = window.innerHeight / 2;
-            
-            // Determine which side the raccoon is approaching from
+        function checkRaccoonAttacks(raccoon) {
             let blockingEmployee = null;
             
             gameState.employees.forEach(employee => {
@@ -530,11 +466,10 @@
             
             if (blockingEmployee) {
                 throwTrash(raccoon, blockingEmployee);
-                raccoon.trashCooldown = 180; // 3 seconds at 60fps
+                raccoon.trashCooldown = 180;
             }
         }
 
-        // Throw trash at employee
         function throwTrash(raccoon, employee) {
             const trash = document.createElement('div');
             trash.className = 'trash';
@@ -551,33 +486,77 @@
             });
         }
 
-        // Move all bullets
-        function moveBullets() {
+        function handleEmployeeAttacks() {
+            gameState.employees.forEach(employee => {
+                if (employee.attackCooldown <= 0) {
+                    const rect = employee.element.getBoundingClientRect();
+                    employee.x = rect.left + rect.width / 2;
+                    employee.y = rect.top + rect.height / 2;
+
+                    let targetRaccoon = null;
+                    let minDistance = Infinity;
+                    
+                    gameState.raccoons.forEach(raccoon => {
+                        
+                            const dx = raccoon.x - employee.x;
+                            const dy = raccoon.y - employee.y;
+                            const distance = Math.sqrt(dx * dx + dy * dy);
+                            
+                            if (distance < minDistance && distance < 300) {
+                                minDistance = distance;
+                                targetRaccoon = raccoon;
+                            }
+                        
+                    });
+                    
+                    if (targetRaccoon) {
+                        throwBullet(employee, targetRaccoon);
+                        employee.attackCooldown = employeeTypes[employee.type].attackCooldown;
+                    }
+                } else {
+                    employee.attackCooldown--;
+                }
+            });
+        }
+
+        function throwBullet(employee, targetRaccoon) {
+            const bullet = document.createElement('div');
+            bullet.className = 'bullet';
+            bullet.style.left = `${employee.x}px`;
+            bullet.style.top = `${employee.y}px`;
+            gameContainer.appendChild(bullet);
+            
+            gameState.bullets.push({
+                element: bullet,
+                x: employee.x,
+                y: employee.y,
+                target: targetRaccoon,
+                speed: employeeTypes[employee.type].speed,
+                damage: employeeTypes[employee.type].damage
+            });
+        }
+
+        function moveProjectiles() {
             gameState.bullets.forEach((bullet, index) => {
-                // Move toward target
                 const dx = bullet.target.x - bullet.x;
                 const dy = bullet.target.y - bullet.y;
                 const distance = Math.sqrt(dx * dx + dy * dy);
                 
                 if (distance < 5) {
-                    // Bullet reached target
                     bullet.element.remove();
                     gameState.bullets.splice(index, 1);
                     
-                    // Damage raccoon
                     bullet.target.health -= bullet.damage;
                     
-                    // Update health bar
                     const healthPercent = (bullet.target.health / bullet.target.maxHealth) * 100;
                     bullet.target.healthBar.style.width = `${healthPercent}%`;
                     
                     if (bullet.target.health <= 0) {
                         bullet.target.element.remove();
                         gameState.raccoons = gameState.raccoons.filter(r => r !== bullet.target);
-                        gameState.score += 10;
+                        gameState.score += 1;  // Changed from 10 to 1 point per raccoon
                     }
                 } else {
-                    // Move bullet
                     const vx = (dx / distance) * bullet.speed;
                     const vy = (dy / distance) * bullet.speed;
                     
@@ -588,25 +567,18 @@
                     bullet.element.style.top = `${bullet.y}px`;
                 }
             });
-        }
 
-        // Move all trash
-        function moveTrash() {
             gameState.trash.forEach((trash, index) => {
-                // Move toward employee
                 const dx = trash.target.x - trash.x;
                 const dy = trash.target.y - trash.y;
                 const distance = Math.sqrt(dx * dx + dy * dy);
                 
                 if (distance < 5) {
-                    // Trash reached employee
                     trash.element.remove();
                     gameState.trash.splice(index, 1);
                     
-                    // Damage employee
                     trash.target.health--;
                     
-                    // Update health bar
                     const healthPercent = (trash.target.health / trash.target.maxHealth) * 100;
                     trash.target.healthBar.style.width = `${healthPercent}%`;
                     
@@ -615,7 +587,6 @@
                         gameState.employees = gameState.employees.filter(e => e !== trash.target);
                     }
                 } else {
-                    // Move trash
                     const vx = (dx / distance) * trash.speed;
                     const vy = (dy / distance) * trash.speed;
                     
@@ -628,25 +599,20 @@
             });
         }
 
-        // Check for collisions
         function checkCollisions() {
-            // No specific collision needed beyond what we already handle
         }
 
-        // Increase difficulty
         function increaseDifficulty() {
             gameState.raccoonSpeed += 0.2;
             gameState.raccoonSpawnRate = Math.max(500, gameState.raccoonSpawnRate - 200);
         }
 
-        // End game
         function endGame() {
             gameState.gameActive = false;
             finalScoreDisplay.textContent = `Score: ${gameState.score}`;
             gameOverScreen.style.display = 'flex';
         }
 
-        // Set up employee drag and drop
         menuEmployees.forEach(menuEmployee => {
             menuEmployee.addEventListener('dragstart', e => {
                 e.dataTransfer.setData('text/plain', e.target.dataset.type);
@@ -665,12 +631,10 @@
             const type = e.dataTransfer.getData('text/plain');
             if (!['1', '2', '3'].includes(type)) return;
             
-            // Find closest employee position
             let closestPosition = null;
             let minDistance = Infinity;
             
             for (const [side, pos] of Object.entries(employeePositions)) {
-                // Check if position is already taken
                 const taken = gameState.employees.some(emp => emp.side === side);
                 if (taken) continue;
                 
@@ -679,18 +643,17 @@
                     Math.pow(e.clientY - pos.y, 2)
                 );
                 
-                if (distance < minDistance) {
+                if (distance < 200) {
                     minDistance = distance;
                     closestPosition = { side, ...pos };
                 }
             }
             
-            if (closestPosition && minDistance < 200) {
+            if (closestPosition) {
                 placeEmployee(parseInt(type), closestPosition);
             }
         });
 
-        // Place an employee
         function placeEmployee(type, position) {
             const employee = document.createElement('div');
             employee.className = `employee ${employeeTypes[type].class}`;
@@ -698,7 +661,6 @@
             employee.style.top = `${position.y}px`;
             employee.style.transform = `rotate(${position.rotation}deg)`;
             
-            // Create health bar
             const healthBarContainer = document.createElement('div');
             healthBarContainer.className = 'health-bar-container';
             
@@ -720,71 +682,14 @@
                 type: type,
                 health: employeeTypes[type].health,
                 maxHealth: employeeTypes[type].health,
-                damage: employeeTypes[type].damage,
-                fireRate: employeeTypes[type].fireRate,
-                bulletSpeed: employeeTypes[type].speed,
-                bulletClass: employeeTypes[type].bulletClass,
-                shootCooldown: 0
+                attackCooldown: 0
             };
             
             gameState.employees.push(newEmployee);
-            
-            // Set up shooting interval
-            const shootInterval = setInterval(() => {
-                if (!gameState.gameActive) {
-                    clearInterval(shootInterval);
-                    return;
-                }
-                
-                shoot(newEmployee);
-            }, newEmployee.fireRate);
         }
 
-        // Employee shooting
-        function shoot(employee) {
-            // Find closest raccoon approaching from this side
-            let targetRaccoon = null;
-            let minDistance = Infinity;
-            
-            gameState.raccoons.forEach(raccoon => {
-                // Only target raccoons coming from the same side
-                if (raccoon.side === employee.side) {
-                    const centerX = window.innerWidth / 2;
-                    const centerY = window.innerHeight / 2;
-                    const distance = Math.sqrt(
-                        Math.pow(raccoon.x - centerX, 2) + 
-                        Math.pow(raccoon.y - centerY, 2)
-                    );
-                    
-                    if (distance < minDistance) {
-                        minDistance = distance;
-                        targetRaccoon = raccoon;
-                    }
-                }
-            });
-            
-            if (targetRaccoon) {
-                const bullet = document.createElement('div');
-                bullet.className = `bullet ${employee.bulletClass}`;
-                bullet.style.left = `${employee.x}px`;
-                bullet.style.top = `${employee.y}px`;
-                gameContainer.appendChild(bullet);
-                
-                gameState.bullets.push({
-                    element: bullet,
-                    x: employee.x,
-                    y: employee.y,
-                    target: targetRaccoon,
-                    speed: employee.bulletSpeed,
-                    damage: employee.damage
-                });
-            }
-        }
-
-        // Restart game
         restartBtn.addEventListener('click', initGame);
 
-        // Start game
         initGame();
     </script>
 </body>
