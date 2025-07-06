@@ -1,10 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="styles.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Raccoon Siege: Defend the Donuts!</title>
     <style>
+
+        section {
+            position: relative;
+            left: 2vw;
+            top: 2vh;
+            width: 100%;
+            height: auto;
+            flex-direction: row;
+            align-items: left;
+        }
+
         body {
             margin: 0;
             padding: 0;
@@ -173,7 +185,7 @@
         #score-display {
             position: absolute;
             top: 20px;
-            left: 20px;
+            right: 20px;
             font-size: 24px;
             font-weight: bold;
             color: white;
@@ -197,6 +209,7 @@
         }
         
         #restart-btn {
+            margin: 2%;
             margin-top: 20px;
             padding: 10px 20px;
             font-size: 20px;
@@ -206,10 +219,22 @@
             cursor: pointer;
             color: white;
         }
+
+        p {
+            align-self: center;
+        }
     </style>
 </head>
 <body>
+
     <div id="game-container">
+
+        <section>
+            <button id="menuB" href="/index.html" class="menu-button">
+                Menu
+            </button>
+        </section>
+
         <div id="score-display">Score: 0</div>
         
         <div id="lives-container">
@@ -218,8 +243,6 @@
             <div class="donut"></div>
             <div class="donut"></div>
         </div>
-        
-    
         
         <div id="employee-menu">
             <div class="menu-employee menu-employee-type1" draggable="true" data-type="1"></div>
@@ -231,10 +254,22 @@
             <h1>Game Over!</h1>
             <p id="final-score">Score: 0</p>
             <button id="restart-btn">Play Again</button>
+            <button id="menuBEnd" href="/index.html" class="menu-button">
+                Menu
+            </button>
         </div>
     </div>
 
     <script>
+
+        document.getElementById('menuB').addEventListener('click', () => {
+            window.location.href = './menu.html';
+        });
+
+        document.getElementById('menuBEnd').addEventListener('click', () => {
+            window.location.href = './menu.html';
+        });
+
         const gameState = {
             lives: 4,
             score: 0,
