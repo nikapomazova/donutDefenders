@@ -577,37 +577,22 @@
         }
 
         function updateEmployeeDisplays() {
-            // Get counts directly from localStorage
-            const type1Count = parseInt(localStorage.getItem('employee1Count')) || 0;
-            const type2Count = parseInt(localStorage.getItem('employee2Count')) || 0;
-            const type3Count = parseInt(localStorage.getItem('employee3Count')) || 0;
+            // Get current counts from localStorage (default to 0 if not set)
+            const counts = {
+                type1: parseInt(localStorage.getItem('employee1Count')) || 0,
+                type2: parseInt(localStorage.getItem('employee2Count')) || 0,
+                type3: parseInt(localStorage.getItem('employee3Count')) || 0
+            };
 
-            console.log(type1Count);
-            console.log(type2Count);
-            console.log(type3Count);
+            // Update the badge numbers
+            document.getElementById('employee1-count').textContent = counts.type1;
+            document.getElementById('employee2-count').textContent = counts.type2;
+            document.getElementById('employee3-count').textContent = counts.type3;
 
-            // Update the display elements
-            document.getElementById('employee1-count').textContent = type1Count;
-            document.getElementById('employee2-count').textContent = type2Count;
-            document.getElementById('employee3-count').textContent = type3Count;
-            
-            // Get all menu employee elements
-            const menuEmployees = document.querySelectorAll('.menu-employee');
-            
-            // Always show all menu items but adjust opacity based on availability
-            menuEmployees[0].style.display = 'block';
-            menuEmployees[1].style.display = 'block';
-            menuEmployees[2].style.display = 'block';
-            
-            // Set opacity based on count (1 if available, 0.5 if not)
-            menuEmployees[0].style.opacity = type1Count > 0 ? '1' : '0.5';
-            menuEmployees[1].style.opacity = type2Count > 0 ? '1' : '0.5';
-            menuEmployees[2].style.opacity = type3Count > 0 ? '1' : '0.5';
-            
-            // Optional: Disable interaction when count is 0
-            menuEmployees[0].style.pointerEvents = type1Count > 0 ? 'auto' : 'none';
-            menuEmployees[1].style.pointerEvents = type2Count > 0 ? 'auto' : 'none';
-            menuEmployees[2].style.pointerEvents = type3Count > 0 ? 'auto' : 'none';
+            // Update draggable state based on availability
+            document.querySelector('.menu-employee-type1').draggable = counts.type1 > 0;
+            document.querySelector('.menu-employee-type2').draggable = counts.type2 > 0;
+            document.querySelector('.menu-employee-type3').draggable = counts.type3 > 0;
         }
 
         function initGame() {
