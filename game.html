@@ -549,6 +549,7 @@
         const attackSound = new Audio('AttackSE.mp3');
         const attackSound2 = new Audio('attackSE2.mp3');
         const donutGoneSound = new Audio('donut_goneSE.mp3');
+        const gameOverSound = new Audio('GameOverSE.mp3');
 
         function getEmployeePositions() {
             return {
@@ -1012,6 +1013,8 @@
             gameState.gameActive = false;
             finalScoreDisplay.textContent = gameState.score;
             gameOverScreen.style.display = 'flex';
+
+            gameOverSound.cloneNode().play();
         }
 
         menuEmployees.forEach(menuEmployee => {
