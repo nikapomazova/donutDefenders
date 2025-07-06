@@ -150,8 +150,17 @@
           localStorage.setItem('totalRaccoonsCaught', (raccoonNum + pullResult));
         } else if (pullResult !== "trash") {
           item.src = `${pullResult}.png`;
+
           let employeeNum = localStorage.getItem(`${pullResult}Count`);
-          localStorage.setItem(`${pullResult}Count`, employeeNum + pullResult);
+          console.log("previous number: " + employeeNum);
+          if (isNaN(Number(employeeNum))) {
+            localStorage.setItem(`${pullResult}Count`, "1");
+          } else {
+            const newCount = Number(employeeNum) + 1;
+            localStorage.setItem(`${pullResult}Count`, newCount.toString());
+          }
+          console.log("current number: " + localStorage.getItem(`${pullResult}Count`));
+
         }
         item.style.display = "block";
       } else if (clickCount === 2) {
