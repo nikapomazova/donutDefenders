@@ -37,10 +37,17 @@
         h1 {
             font-size: 3.5rem;
             margin-bottom: 30px;
-            color: #ffcc00;
+            color: #ffe064;
             text-transform: uppercase;
             letter-spacing: 2px;
+            text-shadow:
+                    0 0 5px #561808,
+                    0 0 10px #792a17,
+                    0 0 20px #95402a,
+                    0 0 30px #ac5e48,
+                    0 0 40px #d48572;
         }
+
 
         .menu-buttons {
             display: flex;
@@ -89,7 +96,7 @@
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
-            filter: drop-shadow(0 0 10px rgba(255, 204, 0, 0.7));
+            filter: drop-shadow(0 0 10px rgba(228, 128, 14, 0.7));
         }
 
         .raccoon-icon {
@@ -157,14 +164,16 @@
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Load total raccoons caught from localStorage
-            const totalRaccoons = parseInt(localStorage.getItem('totalRaccoonsCaught')) || 0;
-            document.getElementById('total-raccoons-display').textContent = totalRaccoons;
+     <script>
+
+        const buttons = document.querySelectorAll('.menu-btn');
+        buttons.forEach((btn, index) => {
+            btn.style.opacity = '0';
+            btn.style.transform = 'translateY(20px)';
+            btn.style.transition = `opacity 0.5s ease ${index * 0.1}s, transform 0.5s ease ${index * 0.1}s`;
             
             // Button animations
-            const buttons = document.querySelectorAll('.menu-btn');
+             const buttons = document.querySelectorAll('.menu-btn');
             buttons.forEach((btn, index) => {
                 btn.style.opacity = '0';
                 btn.style.transform = 'translateY(20px)';
