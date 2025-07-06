@@ -464,6 +464,10 @@
 
     <script>
         let totalRaccoonsCaught = parseInt(localStorage.getItem('totalRaccoonsCaught')) || 0;
+
+        if (localStorage.getItem("employee1Count") === null || parseInt(localStorage.getItem("employee1Count")) === 0) {
+            localStorage.setItem("employee1Count", '4');
+        }
         
         document.getElementById('menuBEnd').addEventListener('click', () => {
             window.location.href = './index.html';

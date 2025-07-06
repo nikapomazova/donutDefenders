@@ -287,6 +287,10 @@
     </div>
 
     <script>
+
+        if (localStorage.getItem("employee1Count") === null || parseInt(localStorage.getItem("employee1Count")) === 0) {
+            localStorage.setItem("employee1Count", '4');
+        }
         // Load and display total raccoons caught
         function updateTotalDisplay() {
             const total = parseInt(localStorage.getItem('totalRaccoonsCaught')) || 0;
@@ -303,7 +307,7 @@
         document.getElementById('reset-total-btn').addEventListener('click', () => {
             if (confirm("Are you sure you want to reset your total raccoons caught AND employees acquired? This action cannot be undone.")) {
                 localStorage.setItem('totalRaccoonsCaught', '0');
-                localStorage.setItem('employee1Count', '0');
+                localStorage.setItem('employee1Count', '4');
                 localStorage.setItem('employee2Count', '0');
                 localStorage.setItem('employee3Count', '0');
                 updateTotalDisplay();
