@@ -1,11 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-
     <title>Your Stylist</title>
-
     <link rel="stylesheet" href="styles.css">
-
     <style>
         .background {
             position: fixed;
@@ -71,26 +68,61 @@
             height: 5vh;
         }
 
-        /*divider line */
         .divider {
             width: 1px;
             height: 70%;
             background-color: rgba(255, 255, 255, 0.5);
         }
 
+        #total-display {
+            color: white; 
+            font-size: 24px; 
+            margin: 20px; 
+            display: flex; 
+            align-items: center; 
+            gap: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
 
+        #total-raccoons {
+            font-weight: bold;
+            color: #ffcc00;
+        }
+
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+            margin-top: 30px;
+        }
+
+        .menu-button {
+            padding: 10px 20px;
+            background-color: #b14d34;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            margin: 20px;
+            border: 2px solid #f6eaeb;
+        }
     </style>
-
   </head>
 
   <body>
-
     <div class="background"></div>
 
     <section>
         <button id="menuB" class="menu-button">
             Menu
         </button>
+        <div id="total-display">
+            <span>Total Raccoons:</span>
+            <span id="total-raccoons">0</span>
+            <img src="icon.png" alt="icon" style="width: 30px; height: 30px;">
+        </div>
     </section>
 
     <section class="button-container">
@@ -99,35 +131,59 @@
                 <img src="icon.png" alt="icon" class="icon" />
                 x100
             </span>
-          
             <span class="divider"></span>
-          
             <span class="button-text">Find 1 Employee</span>
         </button>
-        <button class="custom-button" id="findFiveButton">
+        <button class="custom-button findFiveB" id="findFiveButton">
             <span class="icon-label">
                 <img src="icon.png" alt="icon" class="icon" />
                 x500
             </span>
-          
             <span class="divider"></span>
-          
             <span class="button-text">Find 5 Employees!!!</span>
         </button>
     </section>
 
-    <script type="module">
+    <script>
+        // Load total raccoons from localStorage
+        let totalRaccoons = parseInt(localStorage.getItem('totalRaccoonsCaught')) || 0;
+        
+        // Update display
+        function updateDisplay() {
+            document.getElementById('total-raccoons').textContent = totalRaccoons;
+        }
+        
+        // Initialize display
+        updateDisplay();
+        
+        // Menu button
         document.getElementById('menuB').addEventListener('click', () => {
             window.location.href = './index.html';
         });
+        
+        // Find 1 Employee button
         document.getElementById('findOneButton').addEventListener('click', () => {
-            window.location.href = './gachaAnimationOne.html';
+            if (totalRaccoons >= 100) {
+                totalRaccoons -= 100;
+                localStorage.setItem('totalRaccoonsCaught', totalRaccoons);
+                updateDisplay();
+                window.location.href = './gachaAnimationOne.html';
+            } else {
+                alert("Not enough raccoons! You need 100 to find 1 employee.");
+            }
         });
+        
+        // Find 5 Employees button
         document.getElementById('findFiveButton').addEventListener('click', () => {
-            window.location.href = './gachaAnimationFive.html';
+            if (totalRaccoons >= 500) {
+                totalRaccoons -= 500;
+                localStorage.setItem('totalRaccoonsCaught', totalRaccoons);
+                updateDisplay();
+                window.location.href = './gachaAnimationFive.html';
+            } else {
+                alert("Not enough raccoons! You need 500 to find 5 employees.");
+            }
         });
     </script>
-
   </body>
-
 </html>
