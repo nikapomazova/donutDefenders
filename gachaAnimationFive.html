@@ -150,6 +150,11 @@
 
       console.log(pullResult);
 
+      const walkSound = new Audio('walkingSound.mp3');
+      const hiSound = new Audio('Hai.mp3');
+      const hereYouGoSound = new Audio('HereYouGo.mp3');
+      const baiSound = new Audio('Bai.mp3');
+
       //animation logic
 
       const img = document.getElementById("image");
@@ -181,6 +186,7 @@
 
       let step = 0;
       let clickCount = 0;
+      walkSound.cloneNode().play();
 
       //cycle through 4 images, then stop on the 5th
       const interval = setInterval(() => {
@@ -188,6 +194,7 @@
         step++;
 
         if (step === 5) {
+          hiSound.cloneNode().play();
           clearInterval(interval);
           message.style.display = "block";
           document.body.classList.add("reveal-mode");
@@ -200,6 +207,8 @@
           clickCount++;
 
           if (clickCount === 1) {
+
+            hereYouGoSound.cloneNode().play();
 
             //LOGIC FOR OBJECTS PULLED
 
@@ -251,6 +260,8 @@
             img.src = frames[5];
             message.textContent = "Click to Continue";
           } else if (clickCount === 2) {
+            baiSound.cloneNode().play();
+            walkSound.cloneNode().play();
             document.body.classList.remove("reveal-mode");
             //images 6 to 10
             let revealIndex = 6;
