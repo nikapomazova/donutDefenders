@@ -1015,6 +1015,7 @@
         function checkCollisions() {}
 
         function endGame() {
+            audio.pause();
             gameState.gameActive = false;
             finalScoreDisplay.textContent = gameState.score;
             gameOverScreen.style.display = 'flex';
