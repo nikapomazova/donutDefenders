@@ -539,12 +539,34 @@
         const resumeBtn = document.getElementById('resume-btn');
         const menuBtn = document.getElementById('menu-btn');
 
-        const employeePositions = {
-            top: { x: placementIndicators.top.getBoundingClientRect().left, y: placementIndicators.top.getBoundingClientRect().top, rotation: 0 },
-            bottom: { x: placementIndicators.bottom.getBoundingClientRect().left, y: placementIndicators.bottom.getBoundingClientRect().top, rotation: 180 },
-            left: { x: placementIndicators.left.getBoundingClientRect().left, y: placementIndicators.left.getBoundingClientRect().top, rotation: 270 },
-            right: { x: placementIndicators.right.getBoundingClientRect().left, y: placementIndicators.right.getBoundingClientRect().top, rotation: 90 }
-        };
+        const containerRect = gameContainer.getBoundingClientRect();
+
+        function getEmployeePositions() {
+            return {
+                    top: {
+                    x: placementIndicators.top.getBoundingClientRect().left - containerRect.left,
+                    y: placementIndicators.top.getBoundingClientRect().top - containerRect.top,
+                    rotation: 0
+                },
+                bottom: {
+                    x: placementIndicators.bottom.getBoundingClientRect().left - containerRect.left,
+                    y: placementIndicators.bottom.getBoundingClientRect().top - containerRect.top,
+                    rotation: 180
+                },
+                left: {
+                    x: placementIndicators.left.getBoundingClientRect().left - containerRect.left,
+                    y: placementIndicators.left.getBoundingClientRect().top - containerRect.top,
+                    rotation: 270
+                },
+                right: {
+                    x: placementIndicators.right.getBoundingClientRect().left - containerRect.left,
+                    y: placementIndicators.right.getBoundingClientRect().top - containerRect.top,
+                    rotation: 90
+                }
+            }
+        }
+
+        const employeePositions = getEmployeePositions();
 
         function updateEmployeeDisplays() {
             const counts = {
@@ -1008,8 +1030,10 @@
             
             let closestPosition = null;
             let minDistance = Infinity;
+
+            const currentPositions = getEmployeePositions();
             
-            for (const [side, pos] of Object.entries(employeePositions)) {
+            for (const [side, pos] of Object.entries(currentPositions)) {
                 const taken = gameState.employees.some(emp => emp.side === side);
                 if (taken) continue;
                 
@@ -1040,6 +1064,7 @@
             employee.style.left = `${position.x}px`;
             employee.style.top = `${position.y}px`;
             employee.style.transform = `rotate(${position.rotation}deg)`;
+            console.log("employee placed at " + position.x + " in x direction and " + position.y + " in y direction")
             
             const healthBarContainer = document.createElement('div');
             healthBarContainer.className = 'health-bar-container';
