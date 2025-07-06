@@ -179,6 +179,18 @@
             align-items: center;
             gap: 8px;
         }
+
+        #final-score {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 24px;
+        }
+
+        #final-score .raccoon-icon {
+            vertical-align: middle;
+            margin: 0 5px;
+        }
         
         .raccoon-icon {
             width: 50px;
@@ -190,7 +202,7 @@
         
         #difficulty-display {
             position: absolute;
-            top: 80px;
+            top: 60px;
             right: 20px;
             font-size: 20px;
             font-weight: bold;
@@ -385,6 +397,7 @@
             <div class="raccoon-icon"></div>
             <span>Caught</span>
         </div>
+        
         <div id="difficulty-display">Difficulty: 1</div>
         
         <div id="lives-container">
@@ -404,7 +417,7 @@
             <h1>Game Over!</h1>
             <p id="final-score">
                 <span id="final-raccoons">0</span>
-                <div class="raccoon-icon" style="display: inline-block; width: 30px; height: 30px; vertical-align: middle;"></div>
+                <span class="raccoon-icon" style="display: inline-block; width: 30px; height: 30px;"></span>
                 <span>Raccoons Caught</span>
             </p>
             <button id="restart-btn">Play Again</button>

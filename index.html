@@ -48,7 +48,6 @@
                     0 0 40px #d48572;
         }
 
-
         .menu-buttons {
             display: flex;
             flex-direction: column;
@@ -122,6 +121,28 @@
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
 
+        #reset-total-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 15px;
+            font-size: 1rem;
+            background-color: #d43a28;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid #f6eaeb;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        #reset-total-btn:hover {
+            background-color: #e74c3c;
+            transform: translateY(-2px);
+        }
+
         @media (max-width: 600px) {
             h1 {
                 font-size: 2.5rem;
@@ -139,9 +160,14 @@
             }
 
             #total-raccoons-display-container {
-                font-size: 50px;
+                font-size: 30px;
                 top: 10px;
                 right: 10px;
+            }
+            
+            #reset-total-btn {
+                font-size: 0.8rem;
+                padding: 8px 12px;
             }
         }
     </style>
@@ -152,6 +178,8 @@
         <span id="total-raccoons-display">0</span>
         <div class="raccoon-icon"></div>
     </div>
+    
+    <button id="reset-total-btn">Reset Total</button>
 
     <div class="menu-container">
         <div class="game-logo"></div>
@@ -164,27 +192,36 @@
         </div>
     </div>
 
-     <script>
-
+    <script>
+        // Load and display total raccoons caught
+        function updateTotalDisplay() {
+            const total = parseInt(localStorage.getItem('totalRaccoonsCaught')) || 0;
+            document.getElementById('total-raccoons-display').textContent = total;
+        }
+        
+        // Reset total button functionality
+        document.getElementById('reset-total-btn').addEventListener('click', () => {
+            if (confirm("Are you sure you want to reset your total raccoons caught? This cannot be undone.")) {
+                localStorage.setItem('totalRaccoonsCaught', '0');
+                updateTotalDisplay();
+            }
+        });
+        
+        // Button animations
         const buttons = document.querySelectorAll('.menu-btn');
         buttons.forEach((btn, index) => {
             btn.style.opacity = '0';
             btn.style.transform = 'translateY(20px)';
             btn.style.transition = `opacity 0.5s ease ${index * 0.1}s, transform 0.5s ease ${index * 0.1}s`;
             
-            // Button animations
-             const buttons = document.querySelectorAll('.menu-btn');
-            buttons.forEach((btn, index) => {
-                btn.style.opacity = '0';
-                btn.style.transform = 'translateY(20px)';
-                btn.style.transition = `opacity 0.5s ease ${index * 0.1}s, transform 0.5s ease ${index * 0.1}s`;
-                
-                setTimeout(() => {
-                    btn.style.opacity = '1';
-                    btn.style.transform = 'translateY(0)';
-                }, 100);
-            });
+            setTimeout(() => {
+                btn.style.opacity = '1';
+                btn.style.transform = 'translateY(0)';
+            }, 100);
         });
+        
+        // Initialize total display
+        updateTotalDisplay();
     </script>
 </body>
 </html>
