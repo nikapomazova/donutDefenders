@@ -220,8 +220,8 @@
 
                 //saving
 
-                let raccoonNum = localStorage.getItem('totalRaccoonsCaught');
-                localStorage.setItem('totalRaccoonsCaught', (raccoonNum + value));
+                let raccoonNum = parseInt(localStorage.getItem('totalRaccoonsCaught'));
+                localStorage.setItem('totalRaccoonsCaught', (raccoonNum + parseInt(value)));
               } else if (value !== "trash") {
                 item.src = `${value}.png`;
 

@@ -143,8 +143,8 @@
           item.src = "icon.png";
           number.textContent = pullResult;
           number.style.display = "flex";
-          let raccoonNum = localStorage.getItem('totalRaccoonsCaught');
-          localStorage.setItem('totalRaccoonsCaught', (raccoonNum + pullResult));
+          let raccoonNum = parseInt(localStorage.getItem('totalRaccoonsCaught'));
+          localStorage.setItem('totalRaccoonsCaught', (raccoonNum + parseInt(pullResult)));
         } else if (pullResult !== "trash") {
           item.src = `${pullResult}.png`;
 
