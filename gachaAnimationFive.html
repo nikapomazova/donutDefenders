@@ -217,8 +217,18 @@
                 item.src = "icon.png";
                 number.textContent = value;
                 number.style.display = "flex";
-              } else {
+
+                //saving
+
+                raccoonNum = localStorage.getItem('totalRaccoonsCaught');
+                localStorage.setItem('totalRaccoonsCaught', (raccoonNum + pullResult));
+              } else if (pullResult !== "trash") {
                 item.src = `${value}.png`;
+
+                //saving
+
+                employeeNum = localStorage.getItem(`${pullResult}Count`);
+                localStorage.setItem(`${pullResult}Count`, employeeNum + pullResult);
               }
             }
 
