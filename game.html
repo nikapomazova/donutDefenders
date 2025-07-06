@@ -274,7 +274,7 @@
             margin-top: 30px;
             padding: 15px 30px;
             font-size: 28px;
-            background-color: #b14d34;
+            background-color: #e74c3c;
             border: none;
             border-radius: 2vh;
             cursor: pointer;
@@ -536,10 +536,10 @@
         const menuBtn = document.getElementById('menu-btn');
 
         const employeePositions = {
-            top: { x: window.innerWidth / 2, y: window.innerHeight / 2 - 150, rotation: 0 },
-            bottom: { x: window.innerWidth / 2, y: window.innerHeight / 2 + 150, rotation: 180 },
-            left: { x: window.innerWidth / 2 - 150, y: window.innerHeight / 2, rotation: 270 },
-            right: { x: window.innerWidth / 2 + 150, y: window.innerHeight / 2, rotation: 90 }
+            top: { x: placementIndicators.top.getBoundingClientRect().left, y: placementIndicators.top.getBoundingClientRect().top, rotation: 0 },
+            bottom: { x: placementIndicators.bottom.getBoundingClientRect().left, y: placementIndicators.bottom.getBoundingClientRect().top, rotation: 180 },
+            left: { x: placementIndicators.left.getBoundingClientRect().left, y: placementIndicators.left.getBoundingClientRect().top, rotation: 270 },
+            right: { x: placementIndicators.right.getBoundingClientRect().left, y: placementIndicators.right.getBoundingClientRect().top, rotation: 90 }
         };
 
         function processGachaResult() {
