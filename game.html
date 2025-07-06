@@ -577,19 +577,22 @@
         }
 
         function updateEmployeeDisplays() {
-            function updateEmployeeDisplays() {
-            document.getElementById('employee1-count').textContent = gameState.employeeCounts.type1;
-            document.getElementById('employee2-count').textContent = gameState.employeeCounts.type2;
-            document.getElementById('employee3-count').textContent = gameState.employeeCounts.type3;
-            
-            menuEmployees[0].style.display = 'block';
-            menuEmployees[1].style.display = 'block';
-            menuEmployees[2].style.display = 'block';
-            
-            menuEmployees[0].style.opacity = gameState.employeeCounts.type1 > 0 ? '1' : '0.5';
-            menuEmployees[1].style.opacity = gameState.employeeCounts.type2 > 0 ? '1' : '0.5';
-            menuEmployees[2].style.opacity = gameState.employeeCounts.type3 > 0 ? '1' : '0.5';
-        }
+            // Get current counts from localStorage (default to 0 if not set)
+            const counts = {
+                type1: parseInt(localStorage.getItem('employee1Count')) || 0,
+                type2: parseInt(localStorage.getItem('employee2Count')) || 0,
+                type3: parseInt(localStorage.getItem('employee3Count')) || 0
+            };
+
+            // Update the badge numbers
+            document.getElementById('employee1-count').textContent = counts.type1;
+            document.getElementById('employee2-count').textContent = counts.type2;
+            document.getElementById('employee3-count').textContent = counts.type3;
+
+            // Update draggable state based on availability
+            document.querySelector('.menu-employee-type1').draggable = counts.type1 > 0;
+            document.querySelector('.menu-employee-type2').draggable = counts.type2 > 0;
+            document.querySelector('.menu-employee-type3').draggable = counts.type3 > 0;
         }
 
         function initGame() {
