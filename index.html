@@ -14,6 +14,8 @@
             user-select: none;
         }
         
+        audio { display:none;}
+
         #game-container {
             position: relative;
             width: 100vw;
@@ -341,6 +343,14 @@
     </style>
 </head>
 <body>
+
+    <!-- Audio -->
+     
+    <audio loop autoplay id="audioplayer">
+    <source src="Background_music.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+    </audio>
+    
     <div id="game-container">
         <!-- Pause button and menu -->
         <button id="pause-btn">
@@ -383,6 +393,8 @@
                 Menu
             </button>
         </div>
+
+        
     </div>
 
     <script>
@@ -496,6 +508,7 @@
             updatePlacementIndicators();
             requestAnimationFrame(gameLoop);
         }
+
 
         function updatePlacementIndicators() {
             Object.values(placementIndicators).forEach(indicator => {
