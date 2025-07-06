@@ -37,9 +37,15 @@
         h1 {
             font-size: 3.5rem;
             margin-bottom: 30px;
-            color: #ffcc00;
+            color: #ffe064;
             text-transform: uppercase;
             letter-spacing: 2px;
+            text-shadow:
+                    0 0 5px #561808,
+                    0 0 10px #792a17,
+                    0 0 20px #95402a,
+                    0 0 30px #ac5e48,
+                    0 0 40px #d48572;
         }
 
         .menu-buttons {
@@ -89,12 +95,13 @@
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
-            filter: drop-shadow(0 0 10px rgba(255, 204, 0, 0.7));
+            filter: drop-shadow(0 0 10px rgba(228, 128, 14, 0.7));
         }
 
         @media (max-width: 600px) {
             h1 {
                 font-size: 2.5rem;
+
             }
             
             .menu-btn {
@@ -123,17 +130,6 @@
     </div>
 
     <script>
-        document.getElementById('play-btn').addEventListener('click', () => {
-            window.location.href = './game.html';
-        });
-
-        document.getElementById('gacha-btn').addEventListener('click', () => {
-            window.location.href = './gacha.html';
-        });
-
-        document.getElementById('instructions-btn').addEventListener('click', () => {
-            window.location.href = './instructions.html';
-        });
 
         const buttons = document.querySelectorAll('.menu-btn');
         buttons.forEach((btn, index) => {
