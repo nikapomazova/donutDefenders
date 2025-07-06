@@ -1,3 +1,7 @@
+:root {
+    --main-font: "Arial", serif;
+}
+
 .button-container {
     position: absolute;
     top: 66vh;
@@ -51,6 +55,12 @@ h1 {
     color: #8e2e16;
     align-self: center;
     margin-bottom: 1%;
+    text-shadow:
+        0 0 5px #fff,
+        0 0 10px #fff,
+        0 0 20px #e1beb5,
+        0 0 30px #be7e6d,
+        0 0 40px #a43d24;
 }
 
 h4 {
