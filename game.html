@@ -487,6 +487,10 @@
             }
         };
 
+        localStorage.setItem('employee1CountGame', gameState.employeeCounts.type1);
+        localStorage.setItem('employee2CountGame', gameState.employeeCounts.type2);
+        localStorage.setItem('employee3CountGame', gameState.employeeCounts.type3);
+
         const employeeTypes = {
             1: {
                 damage: 1,
@@ -542,45 +546,11 @@
             right: { x: placementIndicators.right.getBoundingClientRect().left, y: placementIndicators.right.getBoundingClientRect().top, rotation: 90 }
         };
 
-        function processGachaResult() {
-            console.log("processing...");
-            const stored = JSON.parse(localStorage.getItem('lastPullResult'));
-            
-            if (!stored) return;
-            console.log("got something...");
-            console.log(stored);
-            
-
-            const {type, value} = stored;
-            
-            if (type === 'number' && !isNaN(value)) {
-                totalRaccoonsCaught += value;
-                localStorage.setItem('totalRaccoonsCaught', totalRaccoonsCaught);
-            } 
-            else if (type === 'string') {
-                switch(value) {
-                    case 'casher':
-                        gameState.employeeCounts.type1++;
-                        localStorage.setItem('employee1Count', gameState.employeeCounts.type1);
-                        break;
-                    case 'manager':
-                        gameState.employeeCounts.type2++;
-                        localStorage.setItem('employee2Count', gameState.employeeCounts.type2);
-                        break;
-                    case 'boss':
-                        gameState.employeeCounts.type3++;
-                        localStorage.setItem('employee3Count', gameState.employeeCounts.type3);
-                        break;
-                }
-            }
-            localStorage.removeItem('lastPullResult');
-        }
-
         function updateEmployeeDisplays() {
             const counts = {
-                type1: parseInt(localStorage.getItem('employee1Count')) || 0,
-                type2: parseInt(localStorage.getItem('employee2Count')) || 0,
-                type3: parseInt(localStorage.getItem('employee3Count')) || 0
+                type1: parseInt(localStorage.getItem('employee1CountGame')) || 0,
+                type2: parseInt(localStorage.getItem('employee2CountGame')) || 0,
+                type3: parseInt(localStorage.getItem('employee3CountGame')) || 0
             };
 
             const types = [1, 2, 3];
@@ -606,7 +576,6 @@
         }
 
         function initGame() {
-            processGachaResult();
             
             gameState.lives = 4;
             gameState.score = 0;
@@ -1057,7 +1026,7 @@
             
             if (closestPosition) {
                 gameState.employeeCounts[`type${type}`]--;
-                localStorage.setItem(`employee${type}Count`, gameState.employeeCounts[`type${type}`]);
+                localStorage.setItem(`employee${type}CountGame`, gameState.employeeCounts[`type${type}`]);
                 updateEmployeeDisplays();
                 placeEmployee(parseInt(type), closestPosition);
             }
