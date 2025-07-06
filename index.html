@@ -175,11 +175,22 @@
             color: white;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
             z-index: 20;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .raccoon-icon {
+            width: 50px;
+            height: 50px;
+            background-image: url('icon.png');
+            background-size: contain;
+            background-repeat: no-repeat;
         }
         
         #difficulty-display {
             position: absolute;
-            top: 60px;
+            top: 80px;
             right: 20px;
             font-size: 20px;
             font-weight: bold;
@@ -187,6 +198,7 @@
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
             z-index: 20;
         }
+        
         #pause-btn {
             position: absolute;
             top: 20px;
@@ -208,6 +220,7 @@
             width: 40px;
             height: 40px;
         }
+        
         #game-over {
             position: absolute;
             top: 0;
@@ -343,12 +356,10 @@
     </style>
 </head>
 <body>
-
     <!-- Audio -->
-     
     <audio loop autoplay id="audioplayer">
-    <source src="Background_music.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
+        <source src="Background_music.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
     </audio>
     
     <div id="game-container">
@@ -369,7 +380,11 @@
         <div id="placement-left" class="placement-indicator"></div>
         <div id="placement-right" class="placement-indicator"></div>
         
-        <div id="score-display">Score: 0</div>
+        <div id="score-display">
+            <span id="raccoons-caught">0</span>
+            <div class="raccoon-icon"></div>
+            <span>Caught</span>
+        </div>
         <div id="difficulty-display">Difficulty: 1</div>
         
         <div id="lives-container">
@@ -387,17 +402,20 @@
         
         <div id="game-over">
             <h1>Game Over!</h1>
-            <p id="final-score">Score: 0</p>
+            <p id="final-score">
+                <span id="final-raccoons">0</span>
+                <div class="raccoon-icon" style="display: inline-block; width: 30px; height: 30px; vertical-align: middle;"></div>
+                <span>Raccoons Caught</span>
+            </p>
             <button id="restart-btn">Play Again</button>
-            <button id="menuBEnd" class="menu-button">
-                Menu
-            </button>
+            <button id="menuBEnd" class="menu-button">Menu</button>
         </div>
-
-        
     </div>
 
     <script>
+        // Initialize total raccoons caught from localStorage
+        let totalRaccoonsCaught = parseInt(localStorage.getItem('totalRaccoonsCaught')) || 0;
+        
         document.getElementById('menuBEnd').addEventListener('click', () => {
             window.location.href = './menu.html';
         });
@@ -453,7 +471,7 @@
         const scoreDisplay = document.getElementById('score-display');
         const difficultyDisplay = document.getElementById('difficulty-display');
         const gameOverScreen = document.getElementById('game-over');
-        const finalScoreDisplay = document.getElementById('final-score');
+        const finalScoreDisplay = document.getElementById('final-raccoons');
         const restartBtn = document.getElementById('restart-btn');
         const menuEmployees = document.querySelectorAll('.menu-employee');
         const placementIndicators = {
@@ -480,9 +498,9 @@
             gameState.lives = 4;
             gameState.score = 0;
             gameState.difficulty = 1;
-            gameState.raccoonSpeed = 1.5; // Faster initial speed
-            gameState.raccoonSpawnRate = 1200; // More frequent initial spawns
-            gameState.raccoonsPerSpawn = 1.5; // More raccoons at once
+            gameState.raccoonSpeed = 1.5;
+            gameState.raccoonSpawnRate = 1200;
+            gameState.raccoonsPerSpawn = 1.5;
             gameState.employees = [];
             gameState.raccoons = [];
             gameState.bullets = [];
@@ -502,13 +520,12 @@
 
             gameOverScreen.style.display = 'none';
             pauseMenu.style.display = 'none';
-            scoreDisplay.textContent = `Score: 0`;
+            document.getElementById('raccoons-caught').textContent = '0';
             difficultyDisplay.textContent = `Difficulty: 1`;
 
             updatePlacementIndicators();
             requestAnimationFrame(gameLoop);
         }
-
 
         function updatePlacementIndicators() {
             Object.values(placementIndicators).forEach(indicator => {
@@ -528,7 +545,6 @@
         function gameLoop(timestamp) {
             if (!gameState.gameActive || gameState.isPaused) return;
 
-            // Check for difficulty increase
             if (gameState.score >= gameState.nextDifficultyIncrease) {
                 increaseDifficulty();
             }
@@ -572,20 +588,11 @@
         function increaseDifficulty() {
             gameState.difficulty++;
             gameState.nextDifficultyIncrease += 30;
-            
-            // Increase raccoon speed (capped at 3x speed)
             gameState.raccoonSpeed = Math.min(3, 1 + (gameState.difficulty * 0.1));
-            
-            // Decrease spawn rate (capped at 500ms)
             gameState.raccoonSpawnRate = Math.max(500, 2000 - (gameState.difficulty * 100));
-            
-            // Increase number of raccoons per spawn (capped at 4)
             gameState.raccoonsPerSpawn = Math.min(4, 1 + Math.floor(gameState.difficulty / 3));
             
-            // Update display
             difficultyDisplay.textContent = `Difficulty: ${gameState.difficulty}`;
-            
-            // Visual feedback
             difficultyDisplay.style.color = getDifficultyColor(gameState.difficulty);
             difficultyDisplay.style.transform = 'scale(1.2)';
             setTimeout(() => {
@@ -594,10 +601,10 @@
         }
 
         function getDifficultyColor(difficulty) {
-            if (difficulty < 3) return '#4CAF50'; // Green
-            if (difficulty < 6) return '#FFC107'; // Yellow
-            if (difficulty < 9) return '#FF9800'; // Orange
-            return '#F44336'; // Red
+            if (difficulty < 3) return '#4CAF50';
+            if (difficulty < 6) return '#FFC107';
+            if (difficulty < 9) return '#FF9800';
+            return '#F44336';
         }
 
         function spawnRaccoon() {
@@ -633,7 +640,7 @@
                 healthBar: healthBar,
                 x: x,
                 y: y,
-                health: 3, // More health for harder difficulty
+                health: 3,
                 maxHealth: 3,
                 side: side,
                 trashCooldown: 0
@@ -646,7 +653,9 @@
                 gameState.raccoons = gameState.raccoons.filter(r => r.element !== raccoon);
                 
                 gameState.score += 1;
-                scoreDisplay.textContent = `Score: ${gameState.score}`;
+                totalRaccoonsCaught += 1;
+                localStorage.setItem('totalRaccoonsCaught', totalRaccoonsCaught);
+                document.getElementById('raccoons-caught').textContent = gameState.score;
             });
         }
 
@@ -711,7 +720,7 @@
             
             if (blockingEmployee) {
                 throwTrash(raccoon, blockingEmployee);
-                raccoon.trashCooldown = 120; // Faster trash throwing
+                raccoon.trashCooldown = 120;
             }
         }
 
@@ -798,7 +807,9 @@
                         bullet.target.element.remove();
                         gameState.raccoons = gameState.raccoons.filter(r => r !== bullet.target);
                         gameState.score += 1;
-                        scoreDisplay.textContent = `Score: ${gameState.score}`;
+                        totalRaccoonsCaught += 1;
+                        localStorage.setItem('totalRaccoonsCaught', totalRaccoonsCaught);
+                        document.getElementById('raccoons-caught').textContent = gameState.score;
                     }
                 } else {
                     const vx = (dx / distance) * bullet.speed;
@@ -848,7 +859,7 @@
 
         function endGame() {
             gameState.gameActive = false;
-            finalScoreDisplay.textContent = `Score: ${gameState.score}`;
+            finalScoreDisplay.textContent = gameState.score;
             gameOverScreen.style.display = 'flex';
         }
 

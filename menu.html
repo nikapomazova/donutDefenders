@@ -52,7 +52,7 @@
         .menu-btn {
             padding: 15px 30px;
             font-size: 1.5rem;
-            background-color: #d43a28; /* More reddish color */
+            background-color: #d43a28;
             color: white;
             border: none;
             border-radius: 10px;
@@ -67,11 +67,11 @@
             align-items: center;
             justify-content: center; 
             width: 100%; 
-            min-height: 60px; 
+            min-height: 60px;
         }
 
         .menu-btn:hover {
-            background-color: #e74c3c; 
+            background-color: #e74c3c;
             transform: translateY(-3px);
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
         }
@@ -92,6 +92,29 @@
             filter: drop-shadow(0 0 10px rgba(255, 204, 0, 0.7));
         }
 
+        .raccoon-icon {
+            width: 60px;
+            height: 60px;
+            background-image: url('icon.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 5px;
+        }
+
+        #total-raccoons-display-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 40px;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
         @media (max-width: 600px) {
             h1 {
                 font-size: 2.5rem;
@@ -107,10 +130,22 @@
                 padding: 30px 20px;
                 width: 90%;
             }
+
+            #total-raccoons-display-container {
+                font-size: 50px;
+                top: 10px;
+                right: 10px;
+            }
         }
     </style>
 </head>
 <body>
+    <div id="total-raccoons-display-container">
+        <span>Total:</span>
+        <span id="total-raccoons-display">0</span>
+        <div class="raccoon-icon"></div>
+    </div>
+
     <div class="menu-container">
         <div class="game-logo"></div>
         <h1>Defend The Donuts</h1>
@@ -123,28 +158,23 @@
     </div>
 
     <script>
-        document.getElementById('play-btn').addEventListener('click', () => {
-            window.location.href = './game.html';
-        });
-
-        document.getElementById('gacha-btn').addEventListener('click', () => {
-            window.location.href = './gacha.html';
-        });
-
-        document.getElementById('instructions-btn').addEventListener('click', () => {
-            window.location.href = './instructions.html';
-        });
-
-        const buttons = document.querySelectorAll('.menu-btn');
-        buttons.forEach((btn, index) => {
-            btn.style.opacity = '0';
-            btn.style.transform = 'translateY(20px)';
-            btn.style.transition = `opacity 0.5s ease ${index * 0.1}s, transform 0.5s ease ${index * 0.1}s`;
+        document.addEventListener('DOMContentLoaded', () => {
+            // Load total raccoons caught from localStorage
+            const totalRaccoons = parseInt(localStorage.getItem('totalRaccoonsCaught')) || 0;
+            document.getElementById('total-raccoons-display').textContent = totalRaccoons;
             
-            setTimeout(() => {
-                btn.style.opacity = '1';
-                btn.style.transform = 'translateY(0)';
-            }, 100);
+            // Button animations
+            const buttons = document.querySelectorAll('.menu-btn');
+            buttons.forEach((btn, index) => {
+                btn.style.opacity = '0';
+                btn.style.transform = 'translateY(20px)';
+                btn.style.transition = `opacity 0.5s ease ${index * 0.1}s, transform 0.5s ease ${index * 0.1}s`;
+                
+                setTimeout(() => {
+                    btn.style.opacity = '1';
+                    btn.style.transform = 'translateY(0)';
+                }, 100);
+            });
         });
     </script>
 </body>
