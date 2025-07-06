@@ -3,7 +3,8 @@
 <head>
     <link rel="stylesheet" href="styles.css">
     <meta charset="UTF-8">
-    <title>How to Play - Raccoon Siege</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Play - Donut Defender</title>
     <style>
 
         .background {
@@ -16,132 +17,247 @@
             background-size: cover;
             background-repeat: no-repeat;
             z-index: -2;
-        }
-
-        .background::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: -1;
-        }
-
-        section {
-            width: 100%;
-            height: auto;
-            flex-direction: row;
-            align-items: left;
+            filter: brightness(0.7);
         }
 
         body {
-            background-color: #111;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
             color: white;
-            font-family: sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
         }
 
-        .instructions {
+        .game-instructions {
             max-width: 800px;
             padding: 2rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
-
-        .instructions h1 {
-            font-size: 5vh;
-            margin-bottom: 1rem;
-            text-shadow: 0 0 20px #f6eaeb;
-        }
-
-        .instructions p {
-            font-size: 2.5vh;
-            line-height: 1.6;
-            margin: 1rem 0;
-        }
-
-        .icon-img {
-            width: 3vw;
-            height: auto;
-            vertical-align: middle;
-        }
-
-        .raccoon-strip {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .raccoon-strip img {
-            height: 8vh;
-        }
-
-        #start-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
-        }
-
-        .sitting-raccoon {
-            margin-top: -5vh;
-            margin-bottom: 2vh;
-            height: 20vh;
-            opacity: 0.8;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+            margin: 2rem;
+            border: 3px solid #f6eaeb;
         }
 
         h1 {
-            color: #fff;
-        }
-
-        #menuB {
-            left: 4vw;
-        }
-
-        .lastP {
-            font-size: 3vw !important;
+            color: #FFD700;
+            font-size: 3rem;
             text-align: center;
-            margin: 2vh 0;
+            margin-bottom: 1.5rem;
+            text-shadow: 3px 3px 0 #b14d34;
+        }
+
+        .instruction-section {
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(177, 77, 52, 0.3);
+            border-radius: 15px;
+            border-left: 5px solid #FFD700;
+        }
+
+        h2 {
+            color: #FFD700;
+            font-size: 1.8rem;
+            margin-top: 0;
+        }
+
+        p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+
+        .icon-img {
+            width: 40px;
+            height: 40px;
+            vertical-align: middle;
+            margin: 0 5px;
+        }
+
+        .employee-showcase {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 2rem 0;
+        }
+
+        .employee-type {
+            text-align: center;
+            width: 30%;
+            min-width: 200px;
+            margin: 1rem;
+        }
+
+        .employee-img {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 0.5rem;
+        }
+
+        .raccoon-showcase {
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .raccoon-img {
+            height: 100px;
+            margin: 0 10px;
+            transition: all 0.3s;
+        }
+
+        .raccoon-img:hover {
+            transform: scale(1.2);
+        }
+
+        .btn {
+            background: linear-gradient(to bottom, #b14d34, #8a3a2a);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.3rem;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 1rem;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            font-family: inherit;
+            font-weight: bold;
+            border: 3px solid #f6eaeb;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+            background: linear-gradient(to bottom, #c15d44, #9a4b3a);
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            margin-top: 2rem;
+        }
+
+        .menu-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 10;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #start-btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            width: 40%; 
+        }
+
+
+
+        @media (max-width: 768px) {
+            .game-instructions {
+                padding: 1rem;
+                margin: 1rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .employee-type {
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
-
     <div class="background"></div>
+    
+    <button id="menuB" class="btn menu-btn">← Menu</button>
 
-    <section>
-        <button id="menuB" class="menu-button">
-            Menu
-        </button>
-    </section>
-    <div class="instructions">
-        <h1>Donut Defender</h1>
-        <p>
-            Protect your precious <img src="FOOD.png" alt="donut" class="icon-img"> donuts from the waves of sneaky raccoons <img src="icon.png" alt="raccoon" class="icon-img">
-        </p>
-        <p>
-            🧠 Drag employees <img src="employee1.png" alt="donut" class="icon-img"> into defensive positions to stop incoming raccoons.<br>
-            🎯 Each employee <img src="employee3.png" alt="donut" class="icon-img"> has different strength.<br>
-            💥 Raccoons <img src="icon.png" alt="donut" class="icon-img"> will try to sneak in from all directions to steal your donuts!<br>
-            👆 Click on raccoons <img src="rac-left.png" alt="donut" class="icon-img"> to eliminate them before they get to the food.
-        </p>
-        <p class="lastP">
-            Lose all <img src="FOOD.png" class="icon-img" alt="donuts"> and it's game over!
-        </p>
-        <img src="./Gacha/5.png" alt="sitting raccoon" class="sitting-raccoon">
-        <button id="start-btn">Start Game</button>
+    <div class="game-instructions">
+        <h1>HOW TO PLAY DONUT DEFENDER</h1>
+        
+        <div class="instruction-section">
+            <h2>🍩 The Mission</h2>
+            <p>
+                Protect your delicious <img src="FOOD.png" alt="donut" class="icon-img"> donuts from waves of hungry raccoons! 
+                You have <strong>4 donut lives</strong> - lose them all and it's game over!
+            </p>
+        </div>
+        
+        <div class="instruction-section">
+            <h2>🛡️ Your Defenders</h2>
+            <p>Place employees around the donut counter to automatically attack raccoons:</p>
+            
+            <div class="employee-showcase">
+                <div class="employee-type">
+                    <img src="employee1.png" alt="Casher" class="employee-img">
+                    <h3>Casher</h3>
+                    <p>Shoot bullets at the raccoon</p>
+                </div>
+                <div class="employee-type">
+                    <img src="employee2.png" alt="Manager" class="employee-img">
+                    <h3>Manager</h3>
+                    <p>Faster attacks</p>
+                </div>
+                <div class="employee-type">
+                    <img src="employee3.png" alt="Boss" class="employee-img">
+                    <h3>Boss</h3>
+                    <p>Strongest but rare</p>
+                </div>
+            </div>
+            
+            <p><strong>How to place:</strong> Drag from the bottom menu to one of the four marked positions.</p>
+        </div>
+        
+        <div class="instruction-section">
+            <h2>🦝 The Enemy</h2>
+            <div class="raccoon-showcase">
+                <img src="rac-left.png" alt="Raccoon" class="raccoon-img">
+                <img src="rac-center.png" alt="Raccoon" class="raccoon-img">
+                <img src="rac-right.png" alt="Raccoon" class="raccoon-img">
+            </div>
+            <p>
+                Raccoons will:<br>
+                • Spawn from all edges of screen<br>
+                • Move toward your donuts<br>
+                • Throw trash at your employees!<br>
+                • Get faster as difficulty increases
+            </p>
+        </div>
+        
+        <div class="instruction-section">
+            <h2>🎯 Pro Tips</h2>
+            <p>
+                • <strong>Click raccoons</strong> for instant catch + points!<br>
+                • <strong>Mix employee types</strong> for best defense<br>
+                • <strong>Watch for trash</strong> - it weakens your employees<br>
+                • <strong>Earn employees</strong> through the gacha system
+            </p>
+        </div>
+        
+        <div class="btn-container">
+            <button id="start-btn" class="btn">START GAME</button>
+        </div>
     </div>
 
     <script>
         document.getElementById('start-btn').addEventListener('click', () => {
             window.location.href = "./game.html";
         });
+        
         document.getElementById('menuB').addEventListener('click', () => {
             window.location.href = './index.html';
         });
