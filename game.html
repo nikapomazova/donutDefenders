@@ -572,13 +572,19 @@
         }
 
         function updateEmployeeDisplays() {
+            function updateEmployeeDisplays() {
             document.getElementById('employee1-count').textContent = gameState.employeeCounts.type1;
             document.getElementById('employee2-count').textContent = gameState.employeeCounts.type2;
             document.getElementById('employee3-count').textContent = gameState.employeeCounts.type3;
             
-            menuEmployees[0].style.display = gameState.employeeCounts.type1 > 0 ? 'block' : 'none';
-            menuEmployees[1].style.display = gameState.employeeCounts.type2 > 0 ? 'block' : 'none';
-            menuEmployees[2].style.display = gameState.employeeCounts.type3 > 0 ? 'block' : 'none';
+            menuEmployees[0].style.display = 'block';
+            menuEmployees[1].style.display = 'block';
+            menuEmployees[2].style.display = 'block';
+            
+            menuEmployees[0].style.opacity = gameState.employeeCounts.type1 > 0 ? '1' : '0.5';
+            menuEmployees[1].style.opacity = gameState.employeeCounts.type2 > 0 ? '1' : '0.5';
+            menuEmployees[2].style.opacity = gameState.employeeCounts.type3 > 0 ? '1' : '0.5';
+        }
         }
 
         function initGame() {
