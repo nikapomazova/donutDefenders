@@ -93,7 +93,7 @@
     </section>
 
     <section class="button-container">
-        <button class="custom-button">
+        <button class="custom-button" id="findOneButton">
             <span class="icon-label">
                 <img src="icon.png" alt="icon" class="icon" />
                 x100
@@ -103,7 +103,7 @@
           
             <span class="button-text">Find 1 Employee</span>
         </button>
-        <button class="custom-button">
+        <button class="custom-button" id="findFiveButton">
             <span class="icon-label">
                 <img src="icon.png" alt="icon" class="icon" />
                 x500
@@ -118,6 +118,12 @@
     <script type="module">
         document.getElementById('menuB').addEventListener('click', () => {
             window.location.href = './menu.html';
+        });
+        document.getElementById('findOneButton').addEventListener('click', () => {
+            window.location.href = './gachaAnimationOne.html';
+        });
+        document.getElementById('findFiveButton').addEventListener('click', () => {
+            window.location.href = './gachaAnimationFive.html';
         });
     </script>
 
