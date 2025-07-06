@@ -90,6 +90,11 @@
 
       console.log(pullResult);
 
+      const walkSound = new Audio('walkingSound.mp3');
+      const hiSound = new Audio('Hai.mp3');
+      const hereYouGoSound = new Audio('HereYouGo.mp3');
+      const baiSound = new Audio('Bai.mp3');
+
       const img = document.getElementById("image");
       const message = document.getElementById("message");
       const item = document.getElementById("item");
@@ -110,6 +115,7 @@
 
     let step = 0;
     let clickCount = 0;
+    walkSound.cloneNode().play();
 
     //cycle through 4 images, then stop on the 5th
     const interval = setInterval(() => {
@@ -117,6 +123,7 @@
       step++;
 
       if (step === 5) {
+        hiSound.cloneNode().play();
         clearInterval(interval);
         message.style.display = "block";
         document.body.classList.add("reveal-mode");
@@ -132,6 +139,7 @@
       //for saving stuff
       
       if (clickCount === 1) {
+        hereYouGoSound.cloneNode().play();
         console.log("first click");
 
         img.src = frames[5];
@@ -161,6 +169,9 @@
         }
         item.style.display = "block";
       } else if (clickCount === 2) {
+        baiSound.cloneNode().play();
+        walkSound.cloneNode().play();
+
         console.log("second click");
         document.body.classList.remove("reveal-mode");
         
