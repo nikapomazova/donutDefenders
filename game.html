@@ -577,22 +577,32 @@
         }
 
         function updateEmployeeDisplays() {
-            // Get current counts from localStorage (default to 0 if not set)
             const counts = {
                 type1: parseInt(localStorage.getItem('employee1Count')) || 0,
                 type2: parseInt(localStorage.getItem('employee2Count')) || 0,
                 type3: parseInt(localStorage.getItem('employee3Count')) || 0
             };
 
-            // Update the badge numbers
-            document.getElementById('employee1-count').textContent = counts.type1;
-            document.getElementById('employee2-count').textContent = counts.type2;
-            document.getElementById('employee3-count').textContent = counts.type3;
-
-            // Update draggable state based on availability
-            document.querySelector('.menu-employee-type1').draggable = counts.type1 > 0;
-            document.querySelector('.menu-employee-type2').draggable = counts.type2 > 0;
-            document.querySelector('.menu-employee-type3').draggable = counts.type3 > 0;
+            const types = [1, 2, 3];
+            
+            types.forEach(type => {
+                const employee = document.querySelector(`.menu-employee-type${type}`);
+                const countBadge = document.getElementById(`employee${type}-count`);
+                const count = counts[`type${type}`];
+                
+                countBadge.textContent = count;
+                employee.draggable = count > 0;
+                
+                if (count <= 0) {
+                    employee.style.opacity = '0.5';
+                    employee.style.filter = 'grayscale(70%)';
+                    employee.style.cursor = 'not-allowed';
+                } else {
+                    employee.style.opacity = '1';
+                    employee.style.filter = 'none';
+                    employee.style.cursor = 'grab';
+                }
+            });
         }
 
         function initGame() {
@@ -1090,9 +1100,16 @@
         }
 
         pauseBtn.addEventListener('click', togglePause);
-        resumeBtn.addEventListener('click', togglePause);
+    
+        resumeBtn.addEventListener('click', () => {
+            togglePause();
+            updateEmployeeDisplays(); 
+        });
+        
         menuBtn.addEventListener('click', returnToMenu);
-        restartBtn.addEventListener('click', initGame);
+        restartBtn.addEventListener('click', () => {
+            initGame(); 
+        });
 
         initGame();
     </script>
