@@ -35,10 +35,6 @@
             align-items: left;
         }
 
-        .findFiveB {
-            background:#791d0d;
-        }
-
         .custom-button {
             height: 10vh;
             width: auto;
@@ -47,7 +43,7 @@
             justify-content: space-between;
             gap: 1vw;
             padding: 4vh 4vw;
-            background-color: #8e2e16;
+            background-color: #b53122;
             color: white;
             border-radius: 2vh;
             font-size: 4vh;
@@ -56,6 +52,10 @@
             box-shadow: 0 0 12px rgba(255, 255, 255, 0.8);
             border: 2px solid #f6eaeb;
             transition: transform 0.3s ease-in-out;
+        }
+
+        .findFiveB {
+            background:#e23e2c;
         }
 
         .icon-label {
@@ -100,10 +100,12 @@
 
         .menu-button {
             padding: 10px 20px;
-            background-color: #b14d34;
+            background-color: #d43a28;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 2vh;
+            font-family: var(--main-font);
+            font-weight: 600;
             font-size: 18px;
             cursor: pointer;
             margin: 20px;
@@ -147,7 +149,7 @@
 
     <script type="module">
         var totalRaccoons = parseInt(localStorage.getItem('totalRaccoonsCaught')) || 0;
-        totalRaccoons = 92837982379478394;
+        // totalRaccoons = 92837982379478394;
         
         function updateDisplay() {
             document.getElementById('total-raccoons').textContent = totalRaccoons;
