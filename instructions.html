@@ -48,7 +48,6 @@
 
         .instructions {
             max-width: 800px;
-            text-align: center;
             padding: 2rem;
             display: flex;
             flex-direction: column;
@@ -104,6 +103,12 @@
         #menuB {
             left: 4vw;
         }
+
+        .lastP {
+            font-size: 3vw !important;
+            text-align: center;
+            margin: 2vh 0;
+        }
     </style>
 </head>
 <body>
@@ -130,8 +135,8 @@
             <img src="rac-center.png" alt="raccoon center">
             <img src="rac-right.png" alt="raccoon right">
         </div>
-        <p>
-            Lose all <img src="FOOD.png" class="icon-img" alt="donuts"> and it's game over! Can you survive the siege?
+        <p class="lastP">
+            Lose all <img src="FOOD.png" class="icon-img" alt="donuts"> and it's game over!
         </p>
         <img src="./Gacha/5.png" alt="sitting raccoon" class="sitting-raccoon">
         <button id="start-btn">Start Game</button>
