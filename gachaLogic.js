@@ -7,11 +7,11 @@ export function pullOne() {
     let number = Math.random();
     if (number<0.15) { //trash
         return "trash";
-    } else if (number<0.65) { //raccoons
+    } else if (number<0.25) { //raccoons
         return parseInt(Math.random()*30);
-    } else if (number<0.85) { //lowest
+    } else if (number<0.55) { //lowest
         return "cashier";
-    } else if (number<0.95) { //middle
+    } else if (number<0.85) { //middle
         return "manager";
     } else { //highest
         return "boss";
