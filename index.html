@@ -469,6 +469,9 @@
         const resumeBtn = document.getElementById('resume-btn');
         const menuBtn = document.getElementById('menu-btn');
 
+        const attackSound = new Audio('AttackSE.mp3');
+        const attackSound2 = new Audio('attackSE2.mp3');
+
         const employeePositions = {
             top: { x: window.innerWidth / 2, y: window.innerHeight / 2 - 100, rotation: 0 },
             bottom: { x: window.innerWidth / 2, y: window.innerHeight / 2 + 100, rotation: 180 },
@@ -647,6 +650,8 @@
                 
                 gameState.score += 1;
                 scoreDisplay.textContent = `Score: ${gameState.score}`;
+
+                attackSound2.play();
             });
         }
 
@@ -777,6 +782,7 @@
                 speed: employeeTypes[employee.type].speed,
                 damage: employeeTypes[employee.type].damage
             });
+
         }
 
         function moveProjectiles() {
