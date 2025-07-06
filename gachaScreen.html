@@ -133,7 +133,7 @@
         <button class="custom-button" id="findOneButton">
             <span class="icon-label">
                 <img src="icon.png" alt="icon" class="icon" />
-                x30
+                x10
             </span>
             <span class="divider"></span>
             <span class="button-text">Find 1 Employee</span>
@@ -141,7 +141,7 @@
         <button class="custom-button findFiveB" id="findFiveButton">
             <span class="icon-label">
                 <img src="icon.png" alt="icon" class="icon" />
-                x150
+                x50
             </span>
             <span class="divider"></span>
             <span class="button-text">Find 5 Employees!!!</span>
@@ -163,24 +163,24 @@
         });
         
         document.getElementById('findOneButton').addEventListener('click', () => {
-            if (totalRaccoons >= 30) {
-                totalRaccoons -= 30;
+            if (totalRaccoons >= 10) {
+                totalRaccoons -= 10;
                 localStorage.setItem('totalRaccoonsCaught', totalRaccoons);
                 updateDisplay();
                 window.location.href = './gachaAnimationOne.html';
             } else {
-                alert("Not enough raccoons! You need 30 to find 1 employee.");
+                alert("Not enough raccoons! You need 10 to find 1 employee.");
             }
         });
         
         document.getElementById('findFiveButton').addEventListener('click', () => {
-            if (totalRaccoons >= 150) {
-                totalRaccoons -= 150;
+            if (totalRaccoons >= 50) {
+                totalRaccoons -= 50;
                 localStorage.setItem('totalRaccoonsCaught', totalRaccoons);
                 updateDisplay();
                 window.location.href = './gachaAnimationFive.html';
             } else {
-                alert("Not enough raccoons! You need 150 to find 5 employees.");
+                alert("Not enough raccoons! You need 50 to find 5 employees.");
             }
         });
     </script>
