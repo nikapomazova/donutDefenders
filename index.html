@@ -61,9 +61,9 @@
             background-color: #d43a28;
             color: white;
             border: none;
-            border-radius: 10px;
+            border-radius: 3vh;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
             border: 3px solid #f6eaeb;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -77,9 +77,9 @@
         }
 
         .menu-btn:hover {
-            background-color: #e74c3c;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+            transform: translateY(-0.5vh);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+            background: linear-gradient(to bottom, #f26e5f, #d63c2b);
         }
 
         .menu-btn:active {
@@ -130,7 +130,7 @@
             background-color: #d43a28;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 3vh;
             cursor: pointer;
             transition: all 0.3s ease;
             border: 2px solid #f6eaeb;
@@ -140,7 +140,7 @@
 
         #reset-total-btn:hover {
             background-color: #e74c3c;
-            transform: translateY(-2px);
+            transform: translateY(-1vh);
         }
 
         @media (max-width: 600px) {
@@ -213,19 +213,6 @@
                 localStorage.setItem('totalRaccoonsCaught', '0');
                 updateTotalDisplay();
             }
-        });
-        
-        // Button animations
-        const buttons = document.querySelectorAll('.menu-btn');
-        buttons.forEach((btn, index) => {
-            btn.style.opacity = '0';
-            btn.style.transform = 'translateY(20px)';
-            btn.style.transition = `opacity 0.5s ease ${index * 0.1}s, transform 0.5s ease ${index * 0.1}s`;
-            
-            setTimeout(() => {
-                btn.style.opacity = '1';
-                btn.style.transform = 'translateY(0)';
-            }, 100);
         });
         
         // Initialize total display
