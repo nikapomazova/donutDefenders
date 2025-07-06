@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>How to Play - Raccoon Siege</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #111;
+      color: white;
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .instructions {
+      max-width: 800px;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .instructions h1 {
+      font-size: 5vh;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 10px #f6eaeb;
+    }
+
+    .instructions p {
+      font-size: 2.5vh;
+      line-height: 1.6;
+      margin: 1rem 0;
+    }
+
+    .icon-img {
+      width: 40px;
+      height: 40px;
+      vertical-align: middle;
+      margin-right: 5px;
+    }
+
+    .raccoon-strip {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .raccoon-strip img {
+      height: 60px;
+    }
+
+    #start-btn {
+      margin-top: 30px;
+      padding: 15px 30px;
+      font-size: 2vh;
+      background-color: #8e2e16;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      color: white;
+      box-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    #start-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+    }
+
+    .sitting-raccoon {
+      margin-top: 40px;
+      height: 100px;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <div class="instructions">
+    <h1>Welcome to Raccoon Siege!</h1>
+    <p>
+      Protect your precious <img src="FOOD.png" alt="donut" class="icon-img"> donuts from a wave of sneaky raccoons!
+    </p>
+    <p>
+      🧠 Drag employees into defensive positions to stop incoming raccoons.<br>
+      🎯 Each employee has different strength, speed, and firing rate.<br>
+      💥 Raccoons will try to sneak in from all directions to steal your donuts!
+    </p>
+    <div class="raccoon-strip">
+      <img src="rac-left.png" alt="raccoon left">
+      <img src="rac-center.png" alt="raccoon center">
+      <img src="rac-right.png" alt="raccoon right">
+      <img src="icon.png" alt="raccoon icon">
+    </div>
+    <p>
+      Lose all <img src="FOOD.png" class="icon-img" alt="donuts"> and it's game over! Can you survive the siege?
+    </p>
+    <button id="start-btn">Start Game</button>
+    <img src="./Gacha/5.png" alt="sitting raccoon" class="sitting-raccoon">
+  </div>
+
+  <script>
+    document.getElementById('start-btn').addEventListener('click', () => {
+      // Replace this with whatever triggers your game screen
+      window.location.href = "game.html"; // ← change to your actual game file
+    });
+  </script>
+</body>
+</html>
