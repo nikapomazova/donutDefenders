@@ -301,8 +301,11 @@
         
         // Reset total button functionality
         document.getElementById('reset-total-btn').addEventListener('click', () => {
-            if (confirm("Are you sure you want to reset your total raccoons caught? This cannot be undone.")) {
+            if (confirm("Are you sure you want to reset your total raccoons caught AND employees acquired? This action cannot be undone.")) {
                 localStorage.setItem('totalRaccoonsCaught', '0');
+                localStorage.setItem('employee1Count', '0');
+                localStorage.setItem('employee2Count', '0');
+                localStorage.setItem('employee3Count', '0');
                 updateTotalDisplay();
             }
         });
