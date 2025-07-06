@@ -8,8 +8,8 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
+            width: 30vw;
+            height: 30vh;
             background-image: url('clawMachinePic.jpg');
             background-size: cover;
             background-position: center;
@@ -22,14 +22,14 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            width: 30%;
+            height: 30%;
             background: rgba(0, 0, 0, 0.6);
             z-index: -1;
         }
 
         section {
-            width: 100%;
+            width: 30%;
             height: auto;
             flex-direction: row;
             align-items: left;
@@ -129,7 +129,7 @@
         <button class="custom-button" id="findOneButton">
             <span class="icon-label">
                 <img src="icon.png" alt="icon" class="icon" />
-                x100
+                x30
             </span>
             <span class="divider"></span>
             <span class="button-text">Find 1 Employee</span>
@@ -137,7 +137,7 @@
         <button class="custom-button findFiveB" id="findFiveButton">
             <span class="icon-label">
                 <img src="icon.png" alt="icon" class="icon" />
-                x500
+                x150
             </span>
             <span class="divider"></span>
             <span class="button-text">Find 5 Employees!!!</span>
@@ -145,43 +145,37 @@
     </section>
 
     <script>
-        // Load total raccoons from localStorage
         let totalRaccoons = parseInt(localStorage.getItem('totalRaccoonsCaught')) || 0;
         
-        // Update display
         function updateDisplay() {
             document.getElementById('total-raccoons').textContent = totalRaccoons;
         }
         
-        // Initialize display
         updateDisplay();
         
-        // Menu button
         document.getElementById('menuB').addEventListener('click', () => {
             window.location.href = './index.html';
         });
         
-        // Find 1 Employee button
         document.getElementById('findOneButton').addEventListener('click', () => {
-            if (totalRaccoons >= 100) {
-                totalRaccoons -= 100;
+            if (totalRaccoons >= 30) {
+                totalRaccoons -= 30;
                 localStorage.setItem('totalRaccoonsCaught', totalRaccoons);
                 updateDisplay();
                 window.location.href = './gachaAnimationOne.html';
             } else {
-                alert("Not enough raccoons! You need 100 to find 1 employee.");
+                alert("Not enough raccoons! You need 30 to find 1 employee.");
             }
         });
         
-        // Find 5 Employees button
         document.getElementById('findFiveButton').addEventListener('click', () => {
-            if (totalRaccoons >= 500) {
-                totalRaccoons -= 500;
+            if (totalRaccoons >= 150) {
+                totalRaccoons -= 150;
                 localStorage.setItem('totalRaccoonsCaught', totalRaccoons);
                 updateDisplay();
                 window.location.href = './gachaAnimationFive.html';
             } else {
-                alert("Not enough raccoons! You need 500 to find 5 employees.");
+                alert("Not enough raccoons! You need 150 to find 5 employees.");
             }
         });
     </script>

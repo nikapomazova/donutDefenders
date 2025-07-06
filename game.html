@@ -436,9 +436,9 @@
             lives: 4,
             score: 0,
             difficulty: 1,
-            raccoonSpeed: 1,
-            raccoonSpawnRate: 2000,
-            raccoonsPerSpawn: 1,
+            raccoonSpeed: 1.5,
+            raccoonSpawnRate: 1200,
+            raccoonsPerSpawn: 1.5,
             employees: [],
             raccoons: [],
             bullets: [],
@@ -454,26 +454,26 @@
             1: {
                 damage: 1,
                 health: 4,
-                fireRate: 2000,
-                speed: 0.5,
+                fireRate: 1500,
+                speed: 1,
                 class: 'employee-type1',
-                attackCooldown: 180
+                attackCooldown: 150
             },
             2: {
                 damage: 1,
                 health: 4,
-                fireRate: 1500,
-                speed: 1,
+                fireRate: 1000,
+                speed: 2,
                 class: 'employee-type2',
-                attackCooldown: 150
+                attackCooldown: 120
             },
             3: {
                 damage: 1,
                 health: 4,
-                fireRate: 1000,
-                speed: 2,
+                fireRate: 500,
+                speed: 3,
                 class: 'employee-type3',
-                attackCooldown: 120
+                attackCooldown: 100
             }
         };
 
@@ -599,11 +599,17 @@
 
         function increaseDifficulty() {
             gameState.difficulty++;
-            gameState.nextDifficultyIncrease += 30;
-            gameState.raccoonSpeed = Math.min(3, 1 + (gameState.difficulty * 0.1));
-            gameState.raccoonSpawnRate = Math.max(500, 2000 - (gameState.difficulty * 100));
-            gameState.raccoonsPerSpawn = Math.min(4, 1 + Math.floor(gameState.difficulty / 3));
-            
+            gameState.nextDifficultyIncrease += 20;
+
+            gameState.raccoonSpeed = Math.min(5, 1 + (gameState.difficulty * 0.3));
+            gameState.raccoonSpawnRate = Math.max(400, 1600 - (gameState.difficulty * 150));
+            gameState.raccoonsPerSpawn = Math.min(6, 1 + Math.floor(gameState.difficulty / 2));
+
+            console.log("Difficulty:", gameState.difficulty);
+            console.log("Speed:", gameState.raccoonSpeed);
+            console.log("SpawnRate:", gameState.raccoonSpawnRate);
+            console.log("Raccoons/Spawn:", gameState.raccoonsPerSpawn);
+
             difficultyDisplay.textContent = `Difficulty: ${gameState.difficulty}`;
             difficultyDisplay.style.color = getDifficultyColor(gameState.difficulty);
             difficultyDisplay.style.transform = 'scale(1.2)';
@@ -611,6 +617,7 @@
                 difficultyDisplay.style.transform = 'scale(1)';
             }, 300);
         }
+
 
         function getDifficultyColor(difficulty) {
             if (difficulty < 3) return '#4CAF50';
