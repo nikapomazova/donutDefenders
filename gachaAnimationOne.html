@@ -82,6 +82,7 @@
       
       if (clickCount === 1) {
         pullResult = pullOne();
+        console.log(pullResult);
         localStorage.setItem('lastPullResult', JSON.stringify({
           type: typeof pullResult,
           value: pullResult
