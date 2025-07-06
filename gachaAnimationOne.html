@@ -52,6 +52,9 @@
   <div id="message">Click to Reveal!</div>
 
   <script>
+
+    //animation logic
+
     const img = document.getElementById("image");
     const message = document.getElementById("message");
 
@@ -114,6 +117,14 @@
         }
         }
     });
+
+    //animation logic end
+
+    import {pullFive} from ",/gachaLogic.js";
+    let pullResult = pullFive();
+    console.log(pullResult);
+    localStorage.setItem("pullOneResult", pullResult);
+
   </script>
 </body>
 </html>
