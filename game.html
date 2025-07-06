@@ -51,11 +51,12 @@
             height: 60px;
             cursor: pointer;
             transition: transform 0.1s;
-            background-image: url('rac-left.png');
+            background-image: url('rac-left2.png');
             background-size: contain;
             background-repeat: no-repeat;
             z-index: 10;
         }
+        
         
         .raccoon:hover {
             transform: scale(1.2);
@@ -541,6 +542,9 @@
 
         const containerRect = gameContainer.getBoundingClientRect();
 
+        const attackSound = new Audio('AttackSE.mp3');
+        const attackSound2 = new Audio('attackSE2.mp3');
+
         function getEmployeePositions() {
             return {
                     top: {
@@ -730,18 +734,39 @@
             const side = Math.floor(Math.random() * 4);
             let x, y;
             
+            let img = 'rac-left2.png'; 
+    
             switch (side) {
-                case 0: x = Math.random() * window.innerWidth; y = -50; break;
-                case 1: x = window.innerWidth + 50; y = Math.random() * window.innerHeight; break;
-                case 2: x = Math.random() * window.innerWidth; y = window.innerHeight + 50; break;
-                case 3: x = -50; y = Math.random() * window.innerHeight; break;
+                case 0: // Top
+                    x = Math.random() * window.innerWidth;
+                    y = -50;
+                    img = 'rac-left2.png';
+                    break;
+                case 1: // Right
+                    x = window.innerWidth + 50;
+                    y = Math.random() * window.innerHeight;
+                    img = 'rac-right2.png'; 
+                    break;
+                case 2: // Bottom
+                    x = Math.random() * window.innerWidth;
+                    y = window.innerHeight + 50;
+                    img = 'rac-right2.png';
+                    break;
+                case 3: // Left
+                    x = -50;
+                    y = Math.random() * window.innerHeight;
+                    img = 'rac-left2.png'; 
+                    break;
             }
+            
+            raccoon.style.backgroundImage = `url('${img}')`;
             
             raccoon.style.left = `${x}px`;
             raccoon.style.top = `${y}px`;
             gameContainer.appendChild(raccoon);
-            
-            gameState.raccoons.push({
+
+         
+                gameState.raccoons.push({
                 element: raccoon,
                 healthBar: healthBar,
                 x: x,
@@ -750,13 +775,27 @@
                 maxHealth: 3,
                 side: side,
                 trashCooldown: 0
-            });
+                });
+            
+            
+            
             
             raccoon.addEventListener('click', () => {
                 if (!gameState.gameActive || gameState.isPaused) return;
                 
                 raccoon.remove();
                 gameState.raccoons = gameState.raccoons.filter(r => r.element !== raccoon);
+
+                let rand = Math.floor(Math.random()*2);
+
+                if (rand){
+                    attackSound.play();
+                }
+                else {
+                    attackSound2.play();
+                }
+
+                
                 
                 gameState.score += 1;
                 totalRaccoonsCaught += 1;
