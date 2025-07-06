@@ -1,22 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="styles.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Defend the Donuts!</title>
     <style>
-
-        section {
-            position: relative;
-            left: 2vw;
-            top: 2vh;
-            width: 100%;
-            height: auto;
-            flex-direction: row;
-            align-items: left;
-        }
-
         body {
             margin: 0;
             padding: 0;
@@ -175,18 +163,6 @@
             background-image: url('employee3.png');
         }
         
-        #employee-info {
-            position: absolute;
-            bottom: 80px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: rgba(255, 255, 255, 0.7);
-            padding: 10px;
-            border-radius: 10px;
-            text-align: center;
-            font-size: 14px;
-        }
-        
         #score-display {
             position: absolute;
             top: 20px;
@@ -194,6 +170,17 @@
             font-size: 24px;
             font-weight: bold;
             color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            z-index: 20;
+        }
+        
+        #difficulty-display {
+            position: absolute;
+            top: 60px;
+            right: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #ffcc00;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
             z-index: 20;
         }
@@ -215,7 +202,6 @@
         }
         
         #restart-btn {
-            margin: 2%;
             margin-top: 20px;
             padding: 10px 20px;
             font-size: 20px;
@@ -227,7 +213,6 @@
             border: 3px solid #f6eaeb; 
         }
         
-        /* New exact placement indicators */
         .placement-indicator {
             position: absolute;
             width: 60px;
@@ -274,29 +259,18 @@
             border-color: rgba(255, 100, 100, 0.5);
             background-color: rgba(255, 100, 100, 0.1);
         }
-
-        p {
-            align-self: center;
-        }
     </style>
 </head>
 <body>
-
     <div id="game-container">
-        <!-- Exact placement indicators -->
+        <!-- Placement indicators -->
         <div id="placement-top" class="placement-indicator"></div>
         <div id="placement-bottom" class="placement-indicator"></div>
         <div id="placement-left" class="placement-indicator"></div>
         <div id="placement-right" class="placement-indicator"></div>
         
-
-        <section>
-            <button id="menuB" href="/index.html" class="menu-button">
-                Menu
-            </button>
-        </section>
-
         <div id="score-display">Score: 0</div>
+        <div id="difficulty-display">Difficulty: 1</div>
         
         <div id="lives-container">
             <div class="donut"></div>
@@ -315,68 +289,59 @@
             <h1>Game Over!</h1>
             <p id="final-score">Score: 0</p>
             <button id="restart-btn">Play Again</button>
-            <button id="menuBEnd" href="/index.html" class="menu-button">
-                Menu
-            </button>
         </div>
     </div>
 
     <script>
-
-        document.getElementById('menuB').addEventListener('click', () => {
-            window.location.href = './menu.html';
-        });
-
-        document.getElementById('menuBEnd').addEventListener('click', () => {
-            window.location.href = './menu.html';
-        });
-
         const gameState = {
             lives: 4,
             score: 0,
+            difficulty: 1,
             raccoonSpeed: 1,
             raccoonSpawnRate: 2000,
+            raccoonsPerSpawn: 1,
             employees: [],
             raccoons: [],
             bullets: [],
             trash: [],
             gameActive: true,
             lastSpawnTime: 0,
-            difficultyIncreaseInterval: 30000,
-            lastDifficultyIncrease: 0
+            difficultyIncreaseScore: 30,
+            nextDifficultyIncrease: 30
         };
 
         const employeeTypes = {
-                1: {
-                    damage: 1,
-                    health: 4,
-                    fireRate: 2000,
-                    speed: 0.5,
-                    class: 'employee-type1',
-                    attackCooldown: 180
-                },
-                2: {
-                    damage: 1,
-                    health: 4,
-                    fireRate: 1500,
-                    speed: 1,
-                    class: 'employee-type2',
-                    attackCooldown: 150
-                },
-                3: {
-                    damage: 1,
-                    health: 4,
-                    fireRate: 1000,
-                    speed: 2,
-                    class: 'employee-type3',
-                    attackCooldown: 120
-                }
-            };
+            1: {
+                damage: 1,
+                health: 4,
+                fireRate: 2000,
+                speed: 0.5,
+                class: 'employee-type1',
+                attackCooldown: 180
+            },
+            2: {
+                damage: 1,
+                health: 4,
+                fireRate: 1500,
+                speed: 1,
+                class: 'employee-type2',
+                attackCooldown: 150
+            },
+            3: {
+                damage: 1,
+                health: 4,
+                fireRate: 1000,
+                speed: 2,
+                class: 'employee-type3',
+                attackCooldown: 120
+            }
+        };
 
         const gameContainer = document.getElementById('game-container');
         const livesContainer = document.getElementById('lives-container');
         const donuts = document.querySelectorAll('.donut');
         const scoreDisplay = document.getElementById('score-display');
+        const difficultyDisplay = document.getElementById('difficulty-display');
         const gameOverScreen = document.getElementById('game-over');
         const finalScoreDisplay = document.getElementById('final-score');
         const restartBtn = document.getElementById('restart-btn');
@@ -398,15 +363,17 @@
         function initGame() {
             gameState.lives = 4;
             gameState.score = 0;
-            gameState.raccoonSpeed = 1;
-            gameState.raccoonSpawnRate = 2000;
+            gameState.difficulty = 1;
+            gameState.raccoonSpeed = 1; 
+            gameState.raccoonSpawnRate = 1500; 
+            gameState.raccoonsPerSpawn = 1.5;
             gameState.employees = [];
             gameState.raccoons = [];
             gameState.bullets = [];
             gameState.trash = [];
             gameState.gameActive = true;
             gameState.lastSpawnTime = 0;
-            gameState.lastDifficultyIncrease = Date.now();
+            gameState.nextDifficultyIncrease = 30;
 
             donuts.forEach(donut => {
                 donut.style.display = 'block';
@@ -417,20 +384,18 @@
             document.querySelectorAll('.raccoon, .employee, .bullet, .trash').forEach(el => el.remove());
 
             gameOverScreen.style.display = 'none';
+            scoreDisplay.textContent = `Score: 0`;
+            difficultyDisplay.textContent = `Difficulty: 1`;
 
-            // Update placement indicators
             updatePlacementIndicators();
-
             requestAnimationFrame(gameLoop);
         }
 
         function updatePlacementIndicators() {
-            // Reset all indicators
             Object.values(placementIndicators).forEach(indicator => {
                 indicator.className = 'placement-indicator';
             });
 
-            // Mark available positions
             for (const [side, pos] of Object.entries(employeePositions)) {
                 const taken = gameState.employees.some(emp => emp.side === side);
                 if (!taken) {
@@ -444,14 +409,16 @@
         function gameLoop(timestamp) {
             if (!gameState.gameActive) return;
 
-            if (timestamp - gameState.lastSpawnTime > gameState.raccoonSpawnRate) {
-                spawnRaccoon();
-                gameState.lastSpawnTime = timestamp;
+            // Check for difficulty increase
+            if (gameState.score >= gameState.nextDifficultyIncrease) {
+                increaseDifficulty();
             }
 
-            if (timestamp - gameState.lastDifficultyIncrease > gameState.difficultyIncreaseInterval) {
-                increaseDifficulty();
-                gameState.lastDifficultyIncrease = timestamp;
+            if (timestamp - gameState.lastSpawnTime > gameState.raccoonSpawnRate) {
+                for (let i = 0; i < gameState.raccoonsPerSpawn; i++) {
+                    spawnRaccoon();
+                }
+                gameState.lastSpawnTime = timestamp;
             }
 
             moveRaccoons();
@@ -459,9 +426,38 @@
             handleEmployeeAttacks();
             checkCollisions();
 
-            scoreDisplay.textContent = `Score: ${gameState.score}`;
-
             requestAnimationFrame(gameLoop);
+        }
+
+        function increaseDifficulty() {
+            gameState.difficulty++;
+            gameState.nextDifficultyIncrease += 30;
+            
+            // Increase raccoon speed (capped at 3x speed)
+            gameState.raccoonSpeed = Math.min(3, 1 + (gameState.difficulty * 0.1));
+            
+            // Decrease spawn rate (capped at 500ms)
+            gameState.raccoonSpawnRate = Math.max(500, 2000 - (gameState.difficulty * 100));
+            
+            // Increase number of raccoons per spawn (capped at 4)
+            gameState.raccoonsPerSpawn = Math.min(4, 1 + Math.floor(gameState.difficulty / 3));
+            
+            // Update display
+            difficultyDisplay.textContent = `Difficulty: ${gameState.difficulty}`;
+            
+            // Visual feedback
+            difficultyDisplay.style.color = getDifficultyColor(gameState.difficulty);
+            difficultyDisplay.style.transform = 'scale(1.2)';
+            setTimeout(() => {
+                difficultyDisplay.style.transform = 'scale(1)';
+            }, 300);
+        }
+
+        function getDifficultyColor(difficulty) {
+            if (difficulty < 3) return '#4CAF50'; // Green
+            if (difficulty < 6) return '#FFC107'; // Yellow
+            if (difficulty < 9) return '#FF9800'; // Orange
+            return '#F44336'; // Red
         }
 
         function spawnRaccoon() {
@@ -482,27 +478,14 @@
             let x, y;
             
             switch (side) {
-                case 0:
-                    x = Math.random() * window.innerWidth;
-                    y = -50;
-                    break;
-                case 1:
-                    x = window.innerWidth + 50;
-                    y = Math.random() * window.innerHeight;
-                    break;
-                case 2:
-                    x = Math.random() * window.innerWidth;
-                    y = window.innerHeight + 50;
-                    break;
-                case 3:
-                    x = -50;
-                    y = Math.random() * window.innerHeight;
-                    break;
+                case 0: x = Math.random() * window.innerWidth; y = -50; break;
+                case 1: x = window.innerWidth + 50; y = Math.random() * window.innerHeight; break;
+                case 2: x = Math.random() * window.innerWidth; y = window.innerHeight + 50; break;
+                case 3: x = -50; y = Math.random() * window.innerHeight; break;
             }
             
             raccoon.style.left = `${x}px`;
             raccoon.style.top = `${y}px`;
-            
             gameContainer.appendChild(raccoon);
             
             gameState.raccoons.push({
@@ -619,16 +602,14 @@
                     let minDistance = Infinity;
                     
                     gameState.raccoons.forEach(raccoon => {
+                        const dx = raccoon.x - employee.x;
+                        const dy = raccoon.y - employee.y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
                         
-                            const dx = raccoon.x - employee.x;
-                            const dy = raccoon.y - employee.y;
-                            const distance = Math.sqrt(dx * dx + dy * dy);
-                            
-                            if (distance < minDistance && distance < 300) {
-                                minDistance = distance;
-                                targetRaccoon = raccoon;
-                            }
-                        
+                        if (distance < minDistance && distance < 300) {
+                            minDistance = distance;
+                            targetRaccoon = raccoon;
+                        }
                     });
                     
                     if (targetRaccoon) {
@@ -677,6 +658,7 @@
                         bullet.target.element.remove();
                         gameState.raccoons = gameState.raccoons.filter(r => r !== bullet.target);
                         gameState.score += 1;
+                        scoreDisplay.textContent = `Score: ${gameState.score}`;
                     }
                 } else {
                     const vx = (dx / distance) * bullet.speed;
@@ -722,13 +704,7 @@
             });
         }
 
-        function checkCollisions() {
-        }
-
-        function increaseDifficulty() {
-            gameState.raccoonSpeed += 0.2;
-            gameState.raccoonSpawnRate = Math.max(500, gameState.raccoonSpawnRate - 200);
-        }
+        function checkCollisions() {}
 
         function endGame() {
             gameState.gameActive = false;
@@ -736,6 +712,7 @@
             gameOverScreen.style.display = 'flex';
         }
 
+        // Event listeners for employee dragging
         menuEmployees.forEach(menuEmployee => {
             menuEmployee.addEventListener('dragstart', e => {
                 e.dataTransfer.setData('text/plain', e.target.dataset.type);
@@ -745,7 +722,6 @@
         gameContainer.addEventListener('dragover', e => {
             e.preventDefault();
             
-            // Highlight the closest available position
             let closestSide = null;
             let minDistance = Infinity;
             
@@ -764,7 +740,6 @@
                 }
             }
             
-            // Reset all indicators to basic available state
             Object.values(placementIndicators).forEach(indicator => {
                 indicator.className = 'placement-indicator';
                 const side = indicator.id.split('-')[1];
@@ -775,7 +750,6 @@
                 }
             });
             
-            // Highlight the closest available position
             if (closestSide) {
                 placementIndicators[closestSide].className = 'placement-indicator';
                 placementIndicators[closestSide].classList.add('available');
@@ -835,7 +809,7 @@
             
             gameContainer.appendChild(employee);
             
-            const newEmployee = {
+            gameState.employees.push({
                 element: employee,
                 healthBar: healthBar,
                 x: position.x,
@@ -845,9 +819,7 @@
                 health: employeeTypes[type].health,
                 maxHealth: employeeTypes[type].health,
                 attackCooldown: 0
-            };
-            
-            gameState.employees.push(newEmployee);
+            });
             
             updatePlacementIndicators();
         }
