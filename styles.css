@@ -44,6 +44,15 @@ p {
     margin-top: 0;
 }
 
+h1 {
+    font-family: var(--main-font);
+    font-size: 20vh;
+    font-weight: 900;
+    color: #8e2e16;
+    align-self: center;
+    margin-bottom: 1%;
+}
+
 h4 {
     font-family: var(--main-font);
     font-size: 8vh;
