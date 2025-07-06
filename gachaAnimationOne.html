@@ -52,27 +52,31 @@
   <div id="message">Click to Reveal!</div>
 
   <script type="module">
-    import {pullOne} from "./gachaLogic.js";
 
-    const img = document.getElementById("image");
-    const message = document.getElementById("message");
+      import {pullOne} from "./gachaLogic.js?v1.1";
+      let pullResult = pullOne();
 
-    const frames = [
-      "./Gacha/1.png",
-      "./Gacha/2.png",
-      "./Gacha/3.png",
-      "./Gacha/4.png",
-      "./Gacha/5.png",
-      "./Gacha/601.png",
-      "./Gacha/7.png",
-      "./Gacha/8.png",
-      "./Gacha/9.png",
-      "./Gacha/10.png"
-    ];
+      console.log(pullResult);
+      import {pullOne} from "./gachaLogic.js";
+
+      const img = document.getElementById("image");
+      const message = document.getElementById("message");
+
+      const frames = [
+        "./Gacha/1.png",
+        "./Gacha/2.png",
+        "./Gacha/3.png",
+        "./Gacha/4.png",
+        "./Gacha/5.png",
+        "./Gacha/601.png",
+        "./Gacha/7.png",
+        "./Gacha/8.png",
+        "./Gacha/9.png",
+        "./Gacha/10.png"
+      ];
 
     let step = 0;
     let clickCount = 0;
-    let pullResult = null;
 
     // First click - pull the gacha
     document.addEventListener("click", async () => {
@@ -113,15 +117,53 @@
     });
 
     // Initial animation
+
+    //cycle through 4 images, then stop on the 5th
     const interval = setInterval(() => {
       img.src = frames[step];
       step++;
+
       if (step === 5) {
         clearInterval(interval);
         message.style.display = "block";
         document.body.classList.add("reveal-mode");
       }
     }, 300);
+
+    //click interaction
+    document.addEventListener("click", () => {
+      if (step>4) {
+        clickCount++;
+
+        if (clickCount === 1) {
+            //show image 6
+            img.src = frames[5];
+            message.textContent = "Click to Continue";
+        } else if (clickCount === 2) {
+            document.body.classList.remove("reveal-mode");
+            //images 6 to 10
+            let revealIndex = 6;
+            img.src = frames[revealIndex];
+            message.style.display = "none";
+
+            const revealInterval = setInterval(() => {
+            revealIndex++;
+
+            if (revealIndex > 9) {
+                clearInterval(revealInterval);
+                setTimeout(() => {
+                window.location.href = "./gachaScreen.html";
+                }, 100);
+            } else {
+                img.src = frames[revealIndex];
+            }
+            }, 300);
+        }
+        }
+    });
+
+    //animation logic end
+
   </script>
 </body>
 </html>
