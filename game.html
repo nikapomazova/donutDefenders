@@ -395,6 +395,10 @@
             justify-content: center;
             align-items: center;
         }
+
+        #pausingButton {
+            filter: invert(34%) sepia(97%) saturate(656%) hue-rotate(340deg) brightness(94%) contrast(94%);
+        }
     </style>
 </head>
 <body>
@@ -405,7 +409,7 @@
     
     <div id="game-container">
         <button id="pause-btn">
-            <img src="PauseButton.png" alt="Pause">
+            <img src="PauseButton.png" alt="Pause" id="pausingButton">
         </button>
         
         <div id="pause-menu">
@@ -1141,7 +1145,7 @@
         
         menuBtn.addEventListener('click', returnToMenu);
         restartBtn.addEventListener('click', () => {
-            initGame(); 
+            location.href = location.href;
         });
 
         initGame();
