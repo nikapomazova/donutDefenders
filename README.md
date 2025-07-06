@@ -1,8 +1,8 @@
-HELLLLLLO.
+# HELLLLLLO.
 
-✅ This is the easiest game to set up and play. Literally. No registrarion, no SMS, no singing in.
+**✅ This is the easiest game to set up and play. Literally. No registrarion, no SMS, no singing in.
 JUST DO IT.
-CATCH THEM AAALLLLLL.
+CATCH THEM AAALLLLLL.**
 
 🦝 This game is inspired by raccoons and TimHortons.
 You find the raccoons, you KILL 🔪 them. Mercilessly.
@@ -24,6 +24,6 @@ There are three types of employees, from least to most effective:
 🎶 The music in this game is authentic and made by yours truly.
 🎨 The art is made by the amazing Annie Liang, with a tiny bit of help from Emily Yuan and Nika Pomazova.
 
-This project was made with love and humour. ❤️
+## This project was made with love and humour. ❤️
 
 Enjoy and have fun!🥳
