@@ -31,14 +31,14 @@
             transform: translate(-50%, -50%);
             display: flex;
             flex-wrap: wrap;
-            width: 120px;
+            width: 180px;
             justify-content: center;
         }
         
         .donut {
-            width: 40px;
-            height: 40px;
-            margin: 10px;
+            width: 60px;
+            height: 60px;
+            margin: 15px;
             transition: all 0.3s;
             background-image: url('FOOD.png');
             background-size: contain;
@@ -47,8 +47,8 @@
         
         .raccoon {
             position: absolute;
-            width: 40px;
-            height: 40px;
+            width: 60px;
+            height: 60px;
             cursor: pointer;
             transition: transform 0.1s;
             background-image: url('rac-left.png');
@@ -63,8 +63,8 @@
         
         .employee {
             position: absolute;
-            width: 60px;
-            height: 60px;
+            width: 90px;
+            height: 90px;
             cursor: move;
             background-size: contain;
             background-repeat: no-repeat;
@@ -85,8 +85,8 @@
         
         .bullet {
             position: absolute;
-            width: 15px;
-            height: 15px;
+            width: 25px;
+            height: 25px;
             background-image: url('bullet.png');
             background-size: contain;
             background-repeat: no-repeat;
@@ -95,8 +95,8 @@
         
         .trash {
             position: absolute;
-            width: 15px;
-            height: 15px;
+            width: 25px;
+            height: 25px;
             background-image: url('trash.png');
             background-size: contain;
             background-repeat: no-repeat;
@@ -105,17 +105,17 @@
         
         .health-bar-container {
             position: absolute;
-            width: 60px;
-            height: 5px;
-            top: -8px;
+            width: 90px;
+            height: 8px;
+            top: -12px;
             left: 0;
             background-color: rgba(0, 0, 0, 0.3);
-            border-radius: 2px;
+            border-radius: 4px;
         }
         
         .health-bar {
             height: 100%;
-            border-radius: 2px;
+            border-radius: 4px;
             transition: width 0.2s;
         }
         
@@ -133,7 +133,7 @@
             left: 50%;
             transform: translateX(-50%);
             display: flex;
-            gap: 20px;
+            gap: 15px;
             background-color: rgba(255, 255, 255, 0.7);
             padding: 10px;
             border-radius: 10px;
@@ -168,33 +168,33 @@
         
         #score-display {
             position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 24px;
+            top: 30px;
+            right: 30px;
+            font-size: 32px;
             font-weight: bold;
             color: white;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
             z-index: 20;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
         }
 
         #final-score {
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 24px;
+            gap: 12px;
+            font-size: 32px;
         }
 
         #final-score .raccoon-icon {
             vertical-align: middle;
-            margin: 0 5px;
+            margin: 0 8px;
         }
         
         .raccoon-icon {
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             background-image: url('icon.png');
             background-size: contain;
             background-repeat: no-repeat;
@@ -202,9 +202,9 @@
         
         #difficulty-display {
             position: absolute;
-            top: 60px;
-            right: 20px;
-            font-size: 20px;
+            top: 90px;
+            right: 30px;
+            font-size: 28px;
             font-weight: bold;
             color: #ffcc00;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
@@ -213,24 +213,24 @@
         
         #pause-btn {
             position: absolute;
-            top: 20px;
-            left: 20px;
-            width: 60px;
-            height: 60px;
+            top: 30px;
+            left: 30px;
+            width: 80px;
+            height: 80px;
             background: rgba(255, 255, 255, 0.2);
-            border: 2px solid white;
+            border: 3px solid white;
             border-radius: 50%;
             cursor: pointer;
             z-index: 30;
-            padding: 5px;
+            padding: 8px;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
         #pause-btn img {
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
         }
         
         #game-over {
@@ -245,29 +245,34 @@
             justify-content: center;
             align-items: center;
             color: white;
-            font-size: 36px;
+            font-size: 48px;
             z-index: 100;
             text-align: center;
         }
         
         #restart-btn {
-            margin: 2%;
-            margin-top: 20px;
-            padding: 10px 20px;
-            font-size: 20px;
+            margin: 3%;
+            margin-top: 30px;
+            padding: 15px 30px;
+            font-size: 28px;
             background-color: #b14d34;
             border: none;
             border-radius: 2vh;
             cursor: pointer;
             color: white;
-            border: 3px solid #f6eaeb; 
+            border: 4px solid #f6eaeb;
+            width: 250px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         
         .placement-indicator {
             position: absolute;
-            width: 60px;
-            height: 60px;
-            border: 2px dashed rgba(255, 255, 255, 0.7);
+            width: 90px;
+            height: 90px;
+            border: 3px dashed rgba(255, 255, 255, 0.7);
             border-radius: 50%;
             pointer-events: none;
             z-index: 1;
@@ -275,26 +280,26 @@
         }
         
         #placement-top {
-            top: calc(50% - 100px);
+            top: calc(50% - 150px);
             left: 50%;
             transform: translate(-50%, -50%);
         }
         
         #placement-bottom {
-            top: calc(50% + 100px);
+            top: calc(50% + 150px);
             left: 50%;
             transform: translate(-50%, -50%);
         }
         
         #placement-left {
             top: 50%;
-            left: calc(50% - 100px);
+            left: calc(50% - 150px);
             transform: translate(-50%, -50%);
         }
         
         #placement-right {
             top: 50%;
-            left: calc(50% + 100px);
+            left: calc(50% + 150px);
             transform: translate(-50%, -50%);
         }
         
@@ -331,51 +336,54 @@
         }
         
         #pause-menu h2 {
-            font-size: 48px;
-            margin-bottom: 30px;
+            font-size: 64px;
+            margin-bottom: 40px;
         }
         
         .menu-option {
-            margin: 10px;
-            padding: 15px 30px;
-            font-size: 24px;
+            margin: 15px;
+            padding: 20px 40px;
+            font-size: 32px;
             background-color: #b14d34;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
             color: white;
-            border: 3px solid #f6eaeb;
+            border: 4px solid #f6eaeb;
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 20%;
-            min-width: 200px; 
-            text-align: center; 
+            width: 25%;
+            min-width: 250px;
+            text-align: center;
         }
         
         #menuBEnd {
-            margin: 2%;
-            margin-top: 20px;
-            padding: 10px 20px;
-            font-size: 20px;
+            margin: 3%;
+            margin-top: 30px;
+            padding: 15px 30px;
+            font-size: 28px;
             background-color: #b14d34;
             border: none;
             border-radius: 2vh;
             cursor: pointer;
             color: white;
-            border: 3px solid #f6eaeb;
+            border: 4px solid #f6eaeb;
+            width: 250px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
     </style>
 </head>
 <body>
-    <!-- Audio -->
     <audio loop autoplay id="audioplayer">
         <source src="Background_music.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
     
     <div id="game-container">
-        <!-- Pause button and menu -->
         <button id="pause-btn">
             <img src="PauseButton.png" alt="Pause">
         </button>
@@ -386,7 +394,6 @@
             <button id="menu-btn" class="menu-option">Back to Menu</button>
         </div>
         
-        <!-- Placement indicators -->
         <div id="placement-top" class="placement-indicator"></div>
         <div id="placement-bottom" class="placement-indicator"></div>
         <div id="placement-left" class="placement-indicator"></div>
@@ -417,7 +424,7 @@
             <h1>Game Over!</h1>
             <p id="final-score">
                 <span id="final-raccoons">0</span>
-                <span class="raccoon-icon" style="display: inline-block; width: 30px; height: 30px;"></span>
+                <span class="raccoon-icon" style="display: inline-block; width: 40px; height: 40px;"></span>
                 <span>Raccoons Caught</span>
             </p>
             <button id="restart-btn">Play Again</button>
@@ -436,9 +443,9 @@
             lives: 4,
             score: 0,
             difficulty: 1,
-            raccoonSpeed: 1,
-            raccoonSpawnRate: 2000,
-            raccoonsPerSpawn: 1,
+            raccoonSpeed: 1.5,
+            raccoonSpawnRate: 1200,
+            raccoonsPerSpawn: 1.5,
             employees: [],
             raccoons: [],
             bullets: [],
@@ -454,26 +461,26 @@
             1: {
                 damage: 1,
                 health: 4,
-                fireRate: 2000,
-                speed: 0.5,
+                fireRate: 1500,
+                speed: 1,
                 class: 'employee-type1',
-                attackCooldown: 180
+                attackCooldown: 150
             },
             2: {
                 damage: 1,
                 health: 4,
-                fireRate: 1500,
-                speed: 1,
+                fireRate: 1000,
+                speed: 2,
                 class: 'employee-type2',
-                attackCooldown: 150
+                attackCooldown: 120
             },
             3: {
                 damage: 1,
                 health: 4,
-                fireRate: 1000,
-                speed: 2,
+                fireRate: 500,
+                speed: 3,
                 class: 'employee-type3',
-                attackCooldown: 120
+                attackCooldown: 100
             }
         };
 
@@ -493,17 +500,16 @@
             right: document.getElementById('placement-right')
         };
 
-        // Pause menu elements
         const pauseBtn = document.getElementById('pause-btn');
         const pauseMenu = document.getElementById('pause-menu');
         const resumeBtn = document.getElementById('resume-btn');
         const menuBtn = document.getElementById('menu-btn');
 
         const employeePositions = {
-            top: { x: window.innerWidth / 2, y: window.innerHeight / 2 - 100, rotation: 0 },
-            bottom: { x: window.innerWidth / 2, y: window.innerHeight / 2 + 100, rotation: 180 },
-            left: { x: window.innerWidth / 2 - 100, y: window.innerHeight / 2, rotation: 270 },
-            right: { x: window.innerWidth / 2 + 100, y: window.innerHeight / 2, rotation: 90 }
+            top: { x: window.innerWidth / 2, y: window.innerHeight / 2 - 150, rotation: 0 },
+            bottom: { x: window.innerWidth / 2, y: window.innerHeight / 2 + 150, rotation: 180 },
+            left: { x: window.innerWidth / 2 - 150, y: window.innerHeight / 2, rotation: 270 },
+            right: { x: window.innerWidth / 2 + 150, y: window.innerHeight / 2, rotation: 90 }
         };
 
         function initGame() {
@@ -599,11 +605,12 @@
 
         function increaseDifficulty() {
             gameState.difficulty++;
-            gameState.nextDifficultyIncrease += 30;
-            gameState.raccoonSpeed = Math.min(3, 1 + (gameState.difficulty * 0.1));
-            gameState.raccoonSpawnRate = Math.max(500, 2000 - (gameState.difficulty * 100));
-            gameState.raccoonsPerSpawn = Math.min(4, 1 + Math.floor(gameState.difficulty / 3));
-            
+            gameState.nextDifficultyIncrease += 20;
+
+            gameState.raccoonSpeed = Math.min(5, 1 + (gameState.difficulty * 0.3));
+            gameState.raccoonSpawnRate = Math.max(400, 1600 - (gameState.difficulty * 150));
+            gameState.raccoonsPerSpawn = Math.min(6, 1 + Math.floor(gameState.difficulty / 2));
+
             difficultyDisplay.textContent = `Difficulty: ${gameState.difficulty}`;
             difficultyDisplay.style.color = getDifficultyColor(gameState.difficulty);
             difficultyDisplay.style.transform = 'scale(1.2)';
@@ -875,7 +882,6 @@
             gameOverScreen.style.display = 'flex';
         }
 
-        // Event listeners for employee dragging
         menuEmployees.forEach(menuEmployee => {
             menuEmployee.addEventListener('dragstart', e => {
                 e.dataTransfer.setData('text/plain', e.target.dataset.type);
@@ -987,7 +993,6 @@
             updatePlacementIndicators();
         }
 
-        // Pause menu event listeners
         pauseBtn.addEventListener('click', togglePause);
         resumeBtn.addEventListener('click', togglePause);
         menuBtn.addEventListener('click', returnToMenu);
