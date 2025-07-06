@@ -52,9 +52,6 @@
   <div id="message">Click to Reveal!</div>
 
   <script type="module">
-
-    //animation logic
-
     const img = document.getElementById("image");
     const message = document.getElementById("message");
 
@@ -74,7 +71,12 @@
     let step = 0;
     let clickCount = 0;
 
-    //cycle through 4 images, then stop on the 5th
+    import {pullOne} from "./gachaLogic.js";
+    let pullResult = pullOne();
+    console.log("Pull result:", pullResult);
+
+    localStorage.setItem('lastPullResult', JSON.stringify(pullResult));
+
     const interval = setInterval(() => {
       img.src = frames[step];
       step++;
@@ -86,18 +88,25 @@
       }
     }, 300);
 
-    //click interaction
     document.addEventListener("click", () => {
       if (step>4) {
         clickCount++;
 
         if (clickCount === 1) {
-            //show image 6
             img.src = frames[5];
-            message.textContent = "Click to Continue";
+            if (typeof pullResult === 'number') {
+                message.textContent = `+${pullResult} Raccoons!`;
+            } else if (pullResult === 'casher') {
+                message.textContent = "New Casher!";
+            } else if (pullResult === 'manager') {
+                message.textContent = "New Manager!";
+            } else if (pullResult === 'boss') {
+                message.textContent = "New Boss!";
+            } else {
+                message.textContent = "Click to Continue";
+            }
         } else if (clickCount === 2) {
             document.body.classList.remove("reveal-mode");
-            //images 6 to 10
             let revealIndex = 6;
             img.src = frames[revealIndex];
             message.style.display = "none";
@@ -117,14 +126,6 @@
         }
         }
     });
-
-    //animation logic end
-
-    import {pullOne} from "./gachaLogic.js";
-    let pullResult = pullOne();
-
-    console.log(pullResult);
-
   </script>
 </body>
 </html>

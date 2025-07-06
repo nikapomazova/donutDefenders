@@ -148,6 +148,24 @@
             border-radius: 5px;
             background-size: contain;
             background-repeat: no-repeat;
+            position: relative;
+        }
+        
+        .employee-count {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: #b14d34;
+            color: white;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+            border: 2px solid white;
         }
         
         .menu-employee:hover {
@@ -375,6 +393,14 @@
             justify-content: center;
             align-items: center;
         }
+
+        
+
+        .employee-count {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
     </style>
 </head>
 <body>
@@ -392,6 +418,21 @@
             <h2>Game Paused</h2>
             <button id="resume-btn" class="menu-option">Resume Game</button>
             <button id="menu-btn" class="menu-option">Back to Menu</button>
+        </div>
+        
+        <div id="employee-counts">
+            <div class="employee-count">
+                <div class="menu-employee menu-employee-type1"></div>
+                <span id="employee1-count">0</span>
+            </div>
+            <div class="employee-count">
+                <div class="menu-employee menu-employee-type2"></div>
+                <span id="employee2-count">0</span>
+            </div>
+            <div class="employee-count">
+                <div class="menu-employee menu-employee-type3"></div>
+                <span id="employee3-count">0</span>
+            </div>
         </div>
         
         <div id="placement-top" class="placement-indicator"></div>
@@ -415,9 +456,15 @@
         </div>
         
         <div id="employee-menu">
-            <div class="menu-employee menu-employee-type1" draggable="true" data-type="1"></div>
-            <div class="menu-employee menu-employee-type2" draggable="true" data-type="2"></div>
-            <div class="menu-employee menu-employee-type3" draggable="true" data-type="3"></div>
+            <div class="menu-employee menu-employee-type1" draggable="true" data-type="1">
+                <div class="employee-count" id="employee1-count">0</div>
+            </div>
+            <div class="menu-employee menu-employee-type2" draggable="true" data-type="2">
+                <div class="employee-count" id="employee2-count">0</div>
+            </div>
+            <div class="menu-employee menu-employee-type3" draggable="true" data-type="3">
+                <div class="employee-count" id="employee3-count">0</div>
+            </div>
         </div>
         
         <div id="game-over">
@@ -454,7 +501,12 @@
             lastSpawnTime: 0,
             difficultyIncreaseScore: 30,
             nextDifficultyIncrease: 30,
-            isPaused: false
+            isPaused: false,
+            employeeCounts: {
+                type1: parseInt(localStorage.getItem('employee1Count')) || 0,
+                type2: parseInt(localStorage.getItem('employee2Count')) || 0,
+                type3: parseInt(localStorage.getItem('employee3Count')) || 0
+            }
         };
 
         const employeeTypes = {
@@ -512,6 +564,38 @@
             right: { x: window.innerWidth / 2 + 150, y: window.innerHeight / 2, rotation: 90 }
         };
 
+        function updateEmployeeCounts() {
+            document.getElementById('employee1-count').textContent = gameState.employeeCounts.type1;
+            document.getElementById('employee2-count').textContent = gameState.employeeCounts.type2;
+            document.getElementById('employee3-count').textContent = gameState.employeeCounts.type3;
+            
+            menuEmployees[0].style.display = gameState.employeeCounts.type1 > 0 ? 'block' : 'none';
+            menuEmployees[1].style.display = gameState.employeeCounts.type2 > 0 ? 'block' : 'none';
+            menuEmployees[2].style.display = gameState.employeeCounts.type3 > 0 ? 'block' : 'none';
+        }
+
+        function processPullResult() {
+            const pullResult = JSON.parse(localStorage.getItem('lastPullResult'));
+            if (!pullResult) return;
+            
+            if (typeof pullResult === 'number') {
+                totalRaccoonsCaught += pullResult;
+                localStorage.setItem('totalRaccoonsCaught', totalRaccoonsCaught);
+            } else if (pullResult === 'casher') {
+                gameState.employeeCounts.type1++;
+                localStorage.setItem('employee1Count', gameState.employeeCounts.type1);
+            } else if (pullResult === 'manager') {
+                gameState.employeeCounts.type2++;
+                localStorage.setItem('employee2Count', gameState.employeeCounts.type2);
+            } else if (pullResult === 'boss') {
+                gameState.employeeCounts.type3++;
+                localStorage.setItem('employee3Count', gameState.employeeCounts.type3);
+            }
+            
+            localStorage.removeItem('lastPullResult');
+            updateEmployeeCounts();
+        }
+
         function initGame() {
             gameState.lives = 4;
             gameState.score = 0;
@@ -527,6 +611,9 @@
             gameState.isPaused = false;
             gameState.lastSpawnTime = 0;
             gameState.nextDifficultyIncrease = 30;
+
+            processPullResult();
+            updateEmployeeCounts();
 
             donuts.forEach(donut => {
                 donut.style.display = 'block';
@@ -884,7 +971,12 @@
 
         menuEmployees.forEach(menuEmployee => {
             menuEmployee.addEventListener('dragstart', e => {
-                e.dataTransfer.setData('text/plain', e.target.dataset.type);
+                const type = e.target.dataset.type;
+                if (gameState.employeeCounts[`type${type}`] <= 0) {
+                    e.preventDefault();
+                    return;
+                }
+                e.dataTransfer.setData('text/plain', type);
             });
         });
 
@@ -934,6 +1026,8 @@
             const type = e.dataTransfer.getData('text/plain');
             if (!['1', '2', '3'].includes(type)) return;
             
+            if (gameState.employeeCounts[`type${type}`] <= 0) return;
+            
             let closestPosition = null;
             let minDistance = Infinity;
             
@@ -953,6 +1047,9 @@
             }
             
             if (closestPosition) {
+                gameState.employeeCounts[`type${type}`]--;
+                localStorage.setItem(`employee${type}Count`, gameState.employeeCounts[`type${type}`]);
+                updateEmployeeCounts();
                 placeEmployee(parseInt(type), closestPosition);
             }
             
