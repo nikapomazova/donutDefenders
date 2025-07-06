@@ -146,11 +146,11 @@
           item.src = "icon.png";
           number.textContent = pullResult;
           number.style.display = "flex";
-          raccoonNum = localStorage.getItem('totalRaccoonsCaught');
+          let raccoonNum = localStorage.getItem('totalRaccoonsCaught');
           localStorage.setItem('totalRaccoonsCaught', (raccoonNum + pullResult));
         } else if (pullResult !== "trash") {
           item.src = `${pullResult}.png`;
-          employeeNum = localStorage.getItem(`${pullResult}Count`);
+          let employeeNum = localStorage.getItem(`${pullResult}Count`);
           localStorage.setItem(`${pullResult}Count`, employeeNum + pullResult);
         }
         item.style.display = "block";
