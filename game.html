@@ -464,6 +464,7 @@
 
     <script>
         let totalRaccoonsCaught = parseInt(localStorage.getItem('totalRaccoonsCaught')) || 0;
+        const audio = document.getElementById("audioplayer");
 
         if (localStorage.getItem("employee1Count") === null || parseInt(localStorage.getItem("employee1Count")) === 0) {
             localStorage.setItem("employee1Count", '4');
@@ -1145,11 +1146,15 @@
             updatePlacementIndicators();
         }
 
-        pauseBtn.addEventListener('click', togglePause);
+        pauseBtn.addEventListener('click', () => {
+            togglePause();
+            audio.pause();
+        });
     
         resumeBtn.addEventListener('click', () => {
             togglePause();
             updateEmployeeDisplays(); 
+            audio.play();
         });
         
         menuBtn.addEventListener('click', returnToMenu);
