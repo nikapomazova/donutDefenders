@@ -548,6 +548,7 @@
 
         const attackSound = new Audio('AttackSE.mp3');
         const attackSound2 = new Audio('attackSE2.mp3');
+        const donutGoneSound = new Audio('donut_goneSE.mp3');
 
         function getEmployeePositions() {
             return {
@@ -793,10 +794,10 @@
                 let rand = Math.floor(Math.random()*2);
 
                 if (rand){
-                    attackSound.play();
+                    attackSound.cloneNode().play();
                 }
                 else {
-                    attackSound2.play();
+                    attackSound2.cloneNode().play();
                 }
 
                 
@@ -847,6 +848,7 @@
             if (gameState.lives >= 0) {
                 donuts[gameState.lives].style.transform = 'scale(0)';
                 donuts[gameState.lives].style.opacity = '0';
+                donutGoneSound.cloneNode().play();
             }
             
             if (gameState.lives <= 0) {
