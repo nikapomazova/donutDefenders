@@ -542,6 +542,9 @@
 
         const containerRect = gameContainer.getBoundingClientRect();
 
+        const attackSound = new Audio('AttackSE.mp3');
+        const attackSound2 = new Audio('attackSE2.mp3');
+
         function getEmployeePositions() {
             return {
                     top: {
@@ -782,6 +785,17 @@
                 
                 raccoon.remove();
                 gameState.raccoons = gameState.raccoons.filter(r => r.element !== raccoon);
+
+                let rand = Math.floor(Math.random()*2);
+
+                if (rand){
+                    attackSound.play();
+                }
+                else {
+                    attackSound2.play();
+                }
+
+                
                 
                 gameState.score += 1;
                 totalRaccoonsCaught += 1;
