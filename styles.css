@@ -25,6 +25,7 @@ button {
     transition: transform 0.3s ease-in-out;
     box-shadow: 0 0 12px rgba(255, 255, 255, 0.8); /* soft white glow */
     text-decoration: none;
+    border: 3px solid #f6eaeb; 
 }
 
 button:hover {

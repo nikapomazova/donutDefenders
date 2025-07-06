@@ -42,6 +42,42 @@
             background:#791d0d;
         }
 
+        .custom-button {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1vw;
+            padding: 1.5vh 2vw;
+            background-color: #8e2e16;
+            color: white;
+            border-radius: 2vh;
+            font-size: 3vh;
+            font-family: var(--main-font);
+            cursor: pointer;
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.8);
+            border: 2px solid #f6eaeb;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .icon-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5vw;
+        }
+
+        .icon {
+            width: 5vh;
+            height: 5vh;
+        }
+
+        /*divider line */
+        .divider {
+            width: 1px;
+            height: 70%;
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+
+
     </style>
 
   </head>
@@ -57,8 +93,26 @@
     </section>
 
     <section class="button-container">
-        <button id="findOne" class="findOneB">Find 1 Employee</button>
-        <button id="findFive" class="findFiveB">Find 5 Employees!!!</button>
+        <button class="custom-button">
+            <span class="icon-label">
+                <img src="icon.png" alt="icon" class="icon" />
+                x100
+            </span>
+          
+            <span class="divider"></span>
+          
+            <span class="button-text">Find 1 Employee</span>
+        </button>
+        <button class="custom-button">
+            <span class="icon-label">
+                <img src="icon.png" alt="icon" class="icon" />
+                x500
+            </span>
+          
+            <span class="divider"></span>
+          
+            <span class="button-text">Find 5 Employees!!!</span>
+        </button>
     </section>
 
   </body>
