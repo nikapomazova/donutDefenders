@@ -51,7 +51,7 @@
   <img id="image" src="./Gacha/1.png" alt="gacha">
   <div id="message">Click to Reveal!</div>
 
-  <script>
+  <script type="module">
 
     //animation logic
 
@@ -120,7 +120,7 @@
 
     //animation logic end
 
-    import {pullOne} from ",/gachaLogic.js";
+    import {pullOne} from "./gachaLogic.js";
     let pullResult = pullOne();
     console.log(pullResult);
     localStorage.setItem("pullOneResult", pullResult);
