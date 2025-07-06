@@ -21,11 +21,14 @@
     }
 
     #image {
-        width: 200px;
-        height: 200px;
+        width: 75vh;
+        height: 75vh;
         object-fit: contain;
         position: relative;
         z-index: 1;
+        /* transform: scale(2);
+        transform-origin: center;
+        transition: transform 0.3s ease-in-out; */
     }
 
     #message {
@@ -40,15 +43,9 @@
         cursor: pointer;
     }
 
-    #image {
-        transform: scale(2);
-        transform-origin: center;
-        transition: transform 0.3s ease-in-out;
-    }
-
     .items {
-      width: 17vh;
-      height: 17vh;
+      width: 24.5vh;
+      height: 24.5vh;
       object-fit: contain;
       position: absolute;
       transform: translate(-50%, -50%);
@@ -62,8 +59,8 @@
     .numbers {
       font-family: var(--main-font);
       font-weight: 300;
-      width: 17vh;
-      height: 17vh;
+      width: 24.5vh;
+      height: 24.5vh;
       text-align: center;
       font-size: 5vh;
       position: absolute;
