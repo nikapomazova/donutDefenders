@@ -146,7 +146,8 @@
     </section>
 
     <script type="module">
-        let totalRaccoons = parseInt(localStorage.getItem('totalRaccoonsCaught')) || 0;
+        var totalRaccoons = parseInt(localStorage.getItem('totalRaccoonsCaught')) || 0;
+        totalRaccoons = 92837982379478394;
         
         function updateDisplay() {
             document.getElementById('total-raccoons').textContent = totalRaccoons;
