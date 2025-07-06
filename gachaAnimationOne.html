@@ -52,6 +52,8 @@
   <div id="message">Click to Reveal!</div>
 
   <script type="module">
+    import {pullOne} from "./gachaLogic.js";
+
     const img = document.getElementById("image");
     const message = document.getElementById("message");
 
@@ -70,62 +72,56 @@
 
     let step = 0;
     let clickCount = 0;
+    let pullResult = null;
 
-    import {pullOne} from "./gachaLogic.js";
-    let pullResult = pullOne();
-    console.log("Pull result:", pullResult);
+    // First click - pull the gacha
+    document.addEventListener("click", async () => {
+      if (step <= 4) return;
+      
+      clickCount++;
+      
+      if (clickCount === 1) {
+        pullResult = pullOne();
+        localStorage.setItem('lastPullResult', JSON.stringify({
+          type: typeof pullResult,
+          value: pullResult
+        }));
 
-    localStorage.setItem('lastPullResult', JSON.stringify(pullResult));
+        img.src = frames[5];
+        if (typeof pullResult === 'number') {
+          message.textContent = `+${pullResult} Raccoons!`;
+        } else {
+          message.textContent = `New ${pullResult.charAt(0).toUpperCase() + pullResult.slice(1)}!`;
+        }
+      } 
+      else if (clickCount === 2) {
+        document.body.classList.remove("reveal-mode");
+        message.style.display = "none";
+        
+        let revealIndex = 6;
+        const revealInterval = setInterval(() => {
+          img.src = frames[revealIndex];
+          revealIndex++;
+          if (revealIndex > 9) {
+            clearInterval(revealInterval);
+            setTimeout(() => {
+              window.location.href = "./gachaScreen.html";
+            }, 100);
+          }
+        }, 300);
+      }
+    });
 
+    // Initial animation
     const interval = setInterval(() => {
       img.src = frames[step];
       step++;
-
       if (step === 5) {
         clearInterval(interval);
         message.style.display = "block";
         document.body.classList.add("reveal-mode");
       }
     }, 300);
-
-    document.addEventListener("click", () => {
-      if (step>4) {
-        clickCount++;
-
-        if (clickCount === 1) {
-            img.src = frames[5];
-            if (typeof pullResult === 'number') {
-                message.textContent = `+${pullResult} Raccoons!`;
-            } else if (pullResult === 'casher') {
-                message.textContent = "New Casher!";
-            } else if (pullResult === 'manager') {
-                message.textContent = "New Manager!";
-            } else if (pullResult === 'boss') {
-                message.textContent = "New Boss!";
-            } else {
-                message.textContent = "Click to Continue";
-            }
-        } else if (clickCount === 2) {
-            document.body.classList.remove("reveal-mode");
-            let revealIndex = 6;
-            img.src = frames[revealIndex];
-            message.style.display = "none";
-
-            const revealInterval = setInterval(() => {
-            revealIndex++;
-
-            if (revealIndex > 9) {
-                clearInterval(revealInterval);
-                setTimeout(() => {
-                window.location.href = "./gachaScreen.html";
-                }, 100);
-            } else {
-                img.src = frames[revealIndex];
-            }
-            }, 300);
-        }
-        }
-    });
   </script>
 </body>
 </html>
