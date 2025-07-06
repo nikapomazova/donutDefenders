@@ -214,11 +214,11 @@
 
               // Check if the value is a number
               if (!isNaN(Number(value))) {
-                item.src = "icon.png"; // e.g., "rac25.png"
+                item.src = "icon.png";
                 number.textContent = value;
                 number.style.display = "flex";
               } else {
-                item.src = `${value}.png`;    // e.g., "lalala.png", "blabla.png"
+                item.src = `${value}.png`;
               }
             }
 
@@ -256,10 +256,10 @@
             if (revealIndex > 9) {
                 clearInterval(revealInterval);
                 setTimeout(() => {
-                window.location.href = "./gachaScreen.html";
+                  window.location.href = "./gachaScreen.html";
                 }, 100);
             } else {
-                img.src = frames[revealIndex];
+              img.src = frames[revealIndex];
             }
             }, 300);
           }
