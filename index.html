@@ -247,11 +247,29 @@
         </div>
     </div>
 
-    <div class="clickable-raccoon raccoon-1" style="top: 20%; left: 10%;" data-sound="sound1.mp3"></div>
-    <div class="clickable-raccoon raccoon-2" style="top: 60%; left: 15%;" data-sound="sound2.mp3"></div>
-    <div class="clickable-raccoon raccoon-3" style="top: 70%; left: 85%;" data-sound="sound3.mp3"></div>
+    <div class="clickable-raccoon raccoon-1" style="top: 20%; left: 10%;" id="soundRac1"></div>
+    <div class="clickable-raccoon raccoon-2" style="top: 60%; left: 15%;" id="soundRac2"></div>
+    <div class="clickable-raccoon raccoon-3" style="top: 70%; left: 85%;" id="soundRac3"></div>
 
     <script>
+        const sound1 = new Audio('sound1.mp3');
+        const sound2 = new Audio('sound2.mp3');
+        const sound3 = new Audio('sound3.mp3');
+
+        const racSound1 = document.getElementById("soundRac1");
+        const racSound2 = document.getElementById("soundRac2");
+        const racSound3 = document.getElementById("soundRac3");
+
+        racSound1.addEventListener('click', () => {
+            sound1.cloneNode().play();
+        });
+        racSound2.addEventListener('click', () => {
+            sound2.cloneNode().play();
+        });
+        racSound3.addEventListener('click', () => {
+            sound3.cloneNode().play();
+        });
+
         if (localStorage.getItem("employee1Count") === null || parseInt(localStorage.getItem("employee1Count")) === 0) {
             localStorage.setItem("employee1Count", '4');
         }
