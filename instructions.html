@@ -1,112 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>How to Play - Raccoon Siege</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background-color: #111;
-      color: white;
-      font-family: sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-    }
+    <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <title>How to Play - Raccoon Siege</title>
+    <style>
 
-    .instructions {
-      max-width: 800px;
-      text-align: center;
-      padding: 2rem;
-    }
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: url('counterGPT.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            z-index: -2;
+        }
 
-    .instructions h1 {
-      font-size: 5vh;
-      margin-bottom: 1rem;
-      text-shadow: 0 0 10px #f6eaeb;
-    }
+        .background::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: -1;
+        }
 
-    .instructions p {
-      font-size: 2.5vh;
-      line-height: 1.6;
-      margin: 1rem 0;
-    }
+        section {
+            width: 100%;
+            height: auto;
+            flex-direction: row;
+            align-items: left;
+        }
 
-    .icon-img {
-      width: 40px;
-      height: 40px;
-      vertical-align: middle;
-      margin-right: 5px;
-    }
+        body {
+            background-color: #111;
+            color: white;
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+        }
 
-    .raccoon-strip {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 20px;
-    }
+        .instructions {
+            max-width: 800px;
+            text-align: center;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
 
-    .raccoon-strip img {
-      height: 60px;
-    }
+        .instructions h1 {
+            font-size: 5vh;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 20px #f6eaeb;
+        }
 
-    #start-btn {
-      margin-top: 30px;
-      padding: 15px 30px;
-      font-size: 2vh;
-      background-color: #8e2e16;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      color: white;
-      box-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
+        .instructions p {
+            font-size: 2.5vh;
+            line-height: 1.6;
+            margin: 1rem 0;
+        }
 
-    #start-btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
-    }
+        .icon-img {
+            width: 4vw;
+            height: auto;
+            vertical-align: middle;
+        }
 
-    .sitting-raccoon {
-      margin-top: 40px;
-      height: 100px;
-      opacity: 0.8;
-    }
-  </style>
+        .raccoon-strip {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .raccoon-strip img {
+            height: 8vh;
+        }
+
+        #start-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+        }
+
+        .sitting-raccoon {
+            margin-top: -5vh;
+            margin-bottom: 2vh;
+            height: 20vh;
+            opacity: 0.8;
+        }
+
+        h1 {
+            color: #fff;
+        }
+
+        #menuB {
+            left: 4vw;
+        }
+    </style>
 </head>
 <body>
-  <div class="instructions">
-    <h1>Welcome to Raccoon Siege!</h1>
-    <p>
-      Protect your precious <img src="FOOD.png" alt="donut" class="icon-img"> donuts from a wave of sneaky raccoons!
-    </p>
-    <p>
-      🧠 Drag employees into defensive positions to stop incoming raccoons.<br>
-      🎯 Each employee has different strength, speed, and firing rate.<br>
-      💥 Raccoons will try to sneak in from all directions to steal your donuts!
-    </p>
-    <div class="raccoon-strip">
-      <img src="rac-left.png" alt="raccoon left">
-      <img src="rac-center.png" alt="raccoon center">
-      <img src="rac-right.png" alt="raccoon right">
-      <img src="icon.png" alt="raccoon icon">
-    </div>
-    <p>
-      Lose all <img src="FOOD.png" class="icon-img" alt="donuts"> and it's game over! Can you survive the siege?
-    </p>
-    <button id="start-btn">Start Game</button>
-    <img src="./Gacha/5.png" alt="sitting raccoon" class="sitting-raccoon">
-  </div>
 
-  <script>
-    document.getElementById('start-btn').addEventListener('click', () => {
-      // Replace this with whatever triggers your game screen
-      window.location.href = "game.html"; // ← change to your actual game file
-    });
-  </script>
+    <div class="background"></div>
+
+    <section>
+        <button id="menuB" class="menu-button">
+            Menu
+        </button>
+    </section>
+    <div class="instructions">
+        <h1>Welcome to Donut Defender!</h1>
+        <p>
+            Protect your precious <img src="FOOD.png" alt="donut" class="icon-img"> donuts from a wave of sneaky raccoons!
+        </p>
+        <p>
+            🧠 Drag employees into defensive positions to stop incoming raccoons.<br>
+            🎯 Each employee has different strength, speed, and firing rate.<br>
+            💥 Raccoons will try to sneak in from all directions to steal your donuts!
+        </p>
+        <div class="raccoon-strip">
+            <img src="rac-left.png" alt="raccoon left">
+            <img src="rac-center.png" alt="raccoon center">
+            <img src="rac-right.png" alt="raccoon right">
+        </div>
+        <p>
+            Lose all <img src="FOOD.png" class="icon-img" alt="donuts"> and it's game over! Can you survive the siege?
+        </p>
+        <img src="./Gacha/5.png" alt="sitting raccoon" class="sitting-raccoon">
+        <button id="start-btn">Start Game</button>
+    </div>
+
+    <script>
+        document.getElementById('start-btn').addEventListener('click', () => {
+            window.location.href = "./game.html";
+        });
+        document.getElementById('menuB').addEventListener('click', () => {
+            window.location.href = './index.html';
+        });
+    </script>
 </body>
 </html>
