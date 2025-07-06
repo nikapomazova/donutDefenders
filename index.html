@@ -283,8 +283,6 @@
             background-color: rgba(255, 100, 100, 0.1);
         }
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
         p {
             align-self: center;
         }
@@ -333,74 +331,6 @@
             cursor: pointer;
             color: white;
             border: 3px solid #f6eaeb;
-=======
-=======
->>>>>>> Stashed changes
-        /* Pause button styles */
-        #pause-btn {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            width: 50px;
-            height: 50px;
-            background: rgba(255, 255, 255, 0.2);
-            border: 2px solid white;
-            border-radius: 50%;
-            cursor: pointer;
-            z-index: 30;
-            padding: 5px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        #pause-btn img {
-            width: 30px;
-            height: 30px;
-        }
-
-        /* Pause menu styles */
-        #pause-menu {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: rgba(0, 0, 0, 0.9);
-            padding: 30px;
-            border-radius: 15px;
-            text-align: center;
-            display: none;
-            z-index: 100;
-            color: white;
-            width: 300px;
-            border: 3px solid #b14d34;
-        }
-
-        #pause-menu h2 {
-            margin-top: 0;
-            color: #ffcc00;
-        }
-
-        .menu-option {
-            display: block;
-            width: 100%;
-            padding: 15px;
-            margin: 10px 0;
-            font-size: 18px;
-            background-color: #b14d34;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            border: 2px solid #f6eaeb;
-        }
-
-        .menu-option:hover {
-            background-color: #d45e40;
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
         }
     </style>
 </head>
@@ -408,15 +338,7 @@
     <div id="game-container">
         <!-- Pause button and menu -->
         <button id="pause-btn">
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
             <img src="PauseButton.png" alt="Pause">
-=======
-            <img src="pause-icon.png" alt="Pause">
->>>>>>> Stashed changes
-=======
-            <img src="pause-icon.png" alt="Pause">
->>>>>>> Stashed changes
         </button>
         
         <div id="pause-menu">
@@ -611,15 +533,7 @@
             gameState.isPaused = !gameState.isPaused;
             
             if (gameState.isPaused) {
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
                 pauseMenu.style.display = 'flex';
-=======
-                pauseMenu.style.display = 'block';
->>>>>>> Stashed changes
-=======
-                pauseMenu.style.display = 'block';
->>>>>>> Stashed changes
             } else {
                 pauseMenu.style.display = 'none';
                 if (gameState.gameActive) {
