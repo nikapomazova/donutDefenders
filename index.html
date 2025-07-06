@@ -185,7 +185,27 @@
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
             z-index: 20;
         }
-        
+        #pause-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 30;
+            padding: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #pause-btn img {
+            width: 40px;
+            height: 40px;
+        }
         #game-over {
             position: absolute;
             top: 0;
@@ -200,6 +220,7 @@
             color: white;
             font-size: 36px;
             z-index: 100;
+            text-align: center;
         }
         
         #restart-btn {
@@ -266,10 +287,72 @@
             align-self: center;
         }
 
+        #pause-menu {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            z-index: 200;
+            text-align: center;
+        }
+        
+        #pause-menu h2 {
+            font-size: 48px;
+            margin-bottom: 30px;
+        }
+        
+        .menu-option {
+            margin: 10px;
+            padding: 15px 30px;
+            font-size: 24px;
+            background-color: #b14d34;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+            border: 3px solid #f6eaeb;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 20%;
+            min-width: 200px; 
+            text-align: center; 
+        }
+        
+        #menuBEnd {
+            margin: 2%;
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 20px;
+            background-color: #b14d34;
+            border: none;
+            border-radius: 2vh;
+            cursor: pointer;
+            color: white;
+            border: 3px solid #f6eaeb;
+        }
     </style>
 </head>
 <body>
     <div id="game-container">
+        <!-- Pause button and menu -->
+        <button id="pause-btn">
+            <img src="PauseButton.png" alt="Pause">
+        </button>
+        
+        <div id="pause-menu">
+            <h2>Game Paused</h2>
+            <button id="resume-btn" class="menu-option">Resume Game</button>
+            <button id="menu-btn" class="menu-option">Back to Menu</button>
+        </div>
+        
         <!-- Placement indicators -->
         <div id="placement-top" class="placement-indicator"></div>
         <div id="placement-bottom" class="placement-indicator"></div>
@@ -303,7 +386,6 @@
     </div>
 
     <script>
-
         document.getElementById('menuBEnd').addEventListener('click', () => {
             window.location.href = './menu.html';
         });
@@ -322,7 +404,8 @@
             gameActive: true,
             lastSpawnTime: 0,
             difficultyIncreaseScore: 30,
-            nextDifficultyIncrease: 30
+            nextDifficultyIncrease: 30,
+            isPaused: false
         };
 
         const employeeTypes = {
@@ -368,6 +451,12 @@
             right: document.getElementById('placement-right')
         };
 
+        // Pause menu elements
+        const pauseBtn = document.getElementById('pause-btn');
+        const pauseMenu = document.getElementById('pause-menu');
+        const resumeBtn = document.getElementById('resume-btn');
+        const menuBtn = document.getElementById('menu-btn');
+
         const employeePositions = {
             top: { x: window.innerWidth / 2, y: window.innerHeight / 2 - 100, rotation: 0 },
             bottom: { x: window.innerWidth / 2, y: window.innerHeight / 2 + 100, rotation: 180 },
@@ -379,14 +468,15 @@
             gameState.lives = 4;
             gameState.score = 0;
             gameState.difficulty = 1;
-            gameState.raccoonSpeed = 1; 
-            gameState.raccoonSpawnRate = 1500; 
-            gameState.raccoonsPerSpawn = 1.5;
+            gameState.raccoonSpeed = 1.5; // Faster initial speed
+            gameState.raccoonSpawnRate = 1200; // More frequent initial spawns
+            gameState.raccoonsPerSpawn = 1.5; // More raccoons at once
             gameState.employees = [];
             gameState.raccoons = [];
             gameState.bullets = [];
             gameState.trash = [];
             gameState.gameActive = true;
+            gameState.isPaused = false;
             gameState.lastSpawnTime = 0;
             gameState.nextDifficultyIncrease = 30;
 
@@ -399,6 +489,7 @@
             document.querySelectorAll('.raccoon, .employee, .bullet, .trash').forEach(el => el.remove());
 
             gameOverScreen.style.display = 'none';
+            pauseMenu.style.display = 'none';
             scoreDisplay.textContent = `Score: 0`;
             difficultyDisplay.textContent = `Difficulty: 1`;
 
@@ -422,7 +513,7 @@
         }
 
         function gameLoop(timestamp) {
-            if (!gameState.gameActive) return;
+            if (!gameState.gameActive || gameState.isPaused) return;
 
             // Check for difficulty increase
             if (gameState.score >= gameState.nextDifficultyIncrease) {
@@ -430,7 +521,7 @@
             }
 
             if (timestamp - gameState.lastSpawnTime > gameState.raccoonSpawnRate) {
-                for (let i = 0; i < gameState.raccoonsPerSpawn; i++) {
+                for (let i = 0; i < Math.max(1, Math.floor(gameState.raccoonsPerSpawn)); i++) {
                     spawnRaccoon();
                 }
                 gameState.lastSpawnTime = timestamp;
@@ -442,6 +533,27 @@
             checkCollisions();
 
             requestAnimationFrame(gameLoop);
+        }
+
+        function togglePause() {
+            gameState.isPaused = !gameState.isPaused;
+            
+            if (gameState.isPaused) {
+                pauseMenu.style.display = 'flex';
+            } else {
+                pauseMenu.style.display = 'none';
+                if (gameState.gameActive) {
+                    requestAnimationFrame(gameLoop);
+                }
+            }
+        }
+
+        function returnToMenu() {
+            if (confirm("Are you sure you want to return to the menu? Your current game progress will not be saved.")) {
+                window.location.href = './menu.html';
+            } else {
+                togglePause();
+            }
         }
 
         function increaseDifficulty() {
@@ -508,14 +620,14 @@
                 healthBar: healthBar,
                 x: x,
                 y: y,
-                health: 2,
-                maxHealth: 2,
+                health: 3, // More health for harder difficulty
+                maxHealth: 3,
                 side: side,
                 trashCooldown: 0
             });
             
             raccoon.addEventListener('click', () => {
-                if (!gameState.gameActive) return;
+                if (!gameState.gameActive || gameState.isPaused) return;
                 
                 raccoon.remove();
                 gameState.raccoons = gameState.raccoons.filter(r => r.element !== raccoon);
@@ -586,7 +698,7 @@
             
             if (blockingEmployee) {
                 throwTrash(raccoon, blockingEmployee);
-                raccoon.trashCooldown = 180;
+                raccoon.trashCooldown = 120; // Faster trash throwing
             }
         }
 
@@ -775,7 +887,7 @@
         gameContainer.addEventListener('drop', e => {
             e.preventDefault();
             
-            if (!gameState.gameActive) return;
+            if (!gameState.gameActive || gameState.isPaused) return;
             
             const type = e.dataTransfer.getData('text/plain');
             if (!['1', '2', '3'].includes(type)) return;
@@ -839,6 +951,10 @@
             updatePlacementIndicators();
         }
 
+        // Pause menu event listeners
+        pauseBtn.addEventListener('click', togglePause);
+        resumeBtn.addEventListener('click', togglePause);
+        menuBtn.addEventListener('click', returnToMenu);
         restartBtn.addEventListener('click', initGame);
 
         initGame();
