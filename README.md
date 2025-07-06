@@ -17,7 +17,7 @@ After getting them, you can use them during the game by dragging them to the sid
 There are three types of employees, from least to most effective:
 - The cashier (Blue) 👶🔵
 - The manager (Red) 👨‍💼🔴
-- The Boss (Green) 🕴️🟢
+- The Boss (Green) 🤴🟢
 
 🎰 Gacha costs raccoons, but don't worry - it's very easy to get them, and you can also get some while gachaing! Great, isn't it?
 
