@@ -136,10 +136,6 @@
       
       if (clickCount === 1) {
         console.log("first click");
-        localStorage.setItem('lastPullResult', JSON.stringify({
-          type: typeof pullResult,
-          value: pullResult
-        }));
 
         img.src = frames[5];
         message.textContent = "Click to Continue";
@@ -150,8 +146,12 @@
           item.src = "icon.png";
           number.textContent = pullResult;
           number.style.display = "flex";
-        } else {
+          let raccoonNum = localStorage.getItem('totalRaccoonsCaught');
+          localStorage.setItem('totalRaccoonsCaught', (raccoonNum + pullResult));
+        } else if (pullResult !== "trash") {
           item.src = `${pullResult}.png`;
+          let employeeNum = localStorage.getItem(`${pullResult}Count`);
+          localStorage.setItem(`${pullResult}Count`, employeeNum + pullResult);
         }
         item.style.display = "block";
       } else if (clickCount === 2) {
