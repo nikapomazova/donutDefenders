@@ -25,6 +25,7 @@ There are three types of employees, from least to most effective:
 🎨 The art is made by the amazing Annie Liang, with a tiny bit of help from Emily Yuan and Nika Pomazova.
 
 ## This project was made with love and humour. ❤️
+Made during the JPEG. hackathon!!
 
 Enjoy and have fun!🥳
 
